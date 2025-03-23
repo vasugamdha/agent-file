@@ -1,6 +1,6 @@
 # Agent File (.af): A shareable file format for stateful agents 
 
-### What is “Agent File” (.af)
+### What is “Agent File” (.af)? 
 Agents files are a file representation of the state of an agent. A fundamental difference between agents and LLMs is that agents are stateful - they have associated message histories, stored memories, and access to specific tools and data sources. Agent files provide a way to represent this state, so that agents can be exported and shared.  
 
 With agent files, you can move agents between different Letta servers, and also between Letta Desktop and Letta Cloud. You can also share agent files with other people so they can recreate your agents with the exact same state and configuration! 
