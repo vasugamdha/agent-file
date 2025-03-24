@@ -5,6 +5,18 @@ Agents files are a file representation of the state of an agent. A fundamental d
 
 With agent files, you can move agents between different Letta servers, and also between Letta Desktop and Letta Cloud. You can also share agent files with other people so they can recreate your agents with the exact same state and configuration! 
 
+## Download 
+
+|      Agent Type      | Description | Download (.af) | Source Code |
+|----------------------|-------------|----------------|-------------|
+| MemGPT Agent       | An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download](https://example.com/item1.af) | [link](github.com) |
+| Deep Research Agent| A agent with planning, search, and memory tools to enable writing deep research reports | [Download](https://example.com/item2.af) | [link](github.com) |
+| Customer Support Agent | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://example.com/item3.af) | [link](github.com) |
+| Composio Agent | An example of an agent that uses a Composio tool to star a GitHub repository | [Download](https://example.com/item3.af) | [link](github.com) |
+| Workflow Agent | A stateless workflow agent with no memory and deterministic tool calling workflows | [Download](https://example.com/item4.af) | [link](github.com) |
+
+## FAQ
+
 ### What state does .af include? 
 
 An .af files contains all the state required to re-create the exact same agent: 
