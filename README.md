@@ -1,11 +1,16 @@
-# Agent File (.af): A shareable file format for stateful agents 
+# Agent File (.af): A file format for stateful agents 
 
-### What is “Agent File” (.af)? 
-Agents files are a file representation of the state of an agent. A fundamental difference between agents and LLMs is that agents are stateful - they have associated message histories, stored memories, and access to specific tools and data sources. Agent files provide a way to represent this state, so that agents can be exported and shared.  
+Agent File (.af) is an open standard file format for serializing stateful agents. Originally designed for the [Letta](https://letta.com) framework, Agent File provides a portable, standardized way to share agents with persistent memory and behavior.
 
-With agent files, you can move agents between different Letta servers, and also between Letta Desktop and Letta Cloud. You can also share agent files with other people so they can recreate your agents with the exact same state and configuration! 
+Agent Files encapsulate all of the components of a stateful agent:
+- Core memory blocks storing agent personality and user information
+- Tool configurations for interacting with external systems
+- Memory management settings and archival data connections
+- LLM provider configurations and model parameters
 
-## Download 
+By standardizing these components in a single file format, Agent File enables seamless transfer of agents between systems, promotes collaboration among developers, and simplifies deployment across environments.
+
+## Download agents
 
 |      Agent Type      | Description | Download (.af) | Source Code |
 |----------------------|-------------|----------------|-------------|
@@ -17,6 +22,15 @@ With agent files, you can move agents between different Letta servers, and also 
 | Workflow Agent | A stateless workflow agent with no memory and deterministic tool calling workflows | [Download](https://example.com/item4.af) | [link](github.com) |
 
 ## FAQ
+
+### Why Agent File?
+
+The AI ecosystem is witnessing rapid growth in agent development, with each framework implementing its own storage mechanisms. Agent File addresses the need for a standard that enables:
+
+- **Portability**: Move agents between systems or deploy them to new environments
+- **Collaboration**: Share your agents with other developers and the community
+- **Preservation**: Archive agent configurations to preserve your work
+- **Versioning**: Track changes to agents over time through a standardized format
 
 ### What state does .af include? 
 
