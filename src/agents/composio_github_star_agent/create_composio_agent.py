@@ -20,7 +20,7 @@ print(github_star_tool)
 agent = client.agents.create(
     name="composio_github_star_agent", 
     description="Agent that stars repos on github",
-    tools=[github_star_tool.id],
+    tool_ids=[github_star_tool.id],
     memory_blocks=[
         {
             "label": "human", 
