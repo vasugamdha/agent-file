@@ -1,3 +1,0 @@
-tavily-python
-letta-client
-firecrawl-py
