@@ -2,12 +2,14 @@
 Letta agents are by default designed to be stateful and have advanced memory capabilities. However, you can still use Letta to design agentic workflows that combined LLMs and tool execution in deterministic ways. To do this, we can configure the agent to disable the memory functionality to essentially create a *stateless* workflow agent. 
 
 ## Configuration
-The workflow agent is configured to:
-* Have no memory blocks
-* Clear the in-context messages on every agent invocation
-* Have no default tools (tools for memory management or multi-agent communication)
+The workflow agent is configured to have:
+* No memory blocks
+* No message persistence between agent invocations (by setting `message_buffer_autoclear=True`)
+* No default Letta tools (tools for memory management or multi-agent communication)
+* Empty `system` prompt for the agent (avoid unnecessary tokens) 
   
-With this, we can create a Letta agent that is essentially a stateless workflow agent. 
+With this, we can create a Letta agent with very little overhead on the number of tokens. 
+
 ## Workflow Graph 
 We define a set of tools and tool rules to create the following stateless workflow agent for evaluating recruiting candidate targets, and emailing candidates that pass the evaluation criteria: 
 
