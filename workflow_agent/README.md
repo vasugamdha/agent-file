@@ -15,13 +15,13 @@ We define a set of tools and tool rules to create the following stateless workfl
 
 <img width="628" alt="image" src="https://github.com/user-attachments/assets/45f91654-b7e0-40b7-91b6-3b2fbf4dd81e" />
 
-We define the following set of tools for the agent: 
+We define the following set of custom tools for the agent: 
 - `retrieve_candidate`: Retrieve a candidate based on their name
 - `evaluate_candidate`: Evaluate a candidate based on their name, and return `True` if we want to contact the candidate, `False` otherwise
 - `send_email`: Send an email to a candidate by specifying their name and the email content to send 
 - `reject`: Reject a candidate
   
-We can define the rules for the workflow graph by specifying tool rules, which define the order in which tools are executed and the conditions under which a tool is called. For this agent, we define the following tool rules:
+We can define the rules for the workflow graph by specifying [tool rules](https://docs.letta.com/guides/agents/tool-rules), which define the order in which tools are executed and the conditions under which a tool is called. For this agent, we define the following tool rules:
 - `retrieve_candidate` is run first
 - `evaluate_candidate` is run after `retrieve_candidate`
 - if `evaluate_candidate` returns `True`, `send_email` is called, otherwise `reject` is called
