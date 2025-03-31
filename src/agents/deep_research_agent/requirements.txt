@@ -1,2 +1,3 @@
 tavily-python
-letta-client-
+letta-client
+firecrawl-py

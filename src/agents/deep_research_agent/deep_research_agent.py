@@ -286,7 +286,7 @@ agent = client.agents.create(
             "type": "conditional", 
             "tool_name": "evaluate_progress", 
             "child_output_mapping": {
-                "False": "write_final_report"
+                "True": "write_final_report"
             }, 
             "default_child": "analyze_and_search_tool"
         },
