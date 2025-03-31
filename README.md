@@ -3,7 +3,7 @@
 </a>
 
 <p align="center">
-    <br /><b>Agent File (.af): An open standard file format for stateful agents</b>.
+    <br /><b>Agent File (.af): An open file format for stateful agents</b>.
 </p>
 
 <div align="center">
@@ -38,14 +38,14 @@ Browse our collection of ready-to-use agents.
 
 To use one of the agents, simply download the agent file (`.af`) and upload it to Letta (instructions [here]()), or any other framework that supports agent files.
 
-| Agent Type | Description | Download | Source |
-|------------|-------------|----------|--------|
-| 🧠 **MemGPT Agent** | An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download](https://example.com/item1.af) | [GitHub](https://github.com/example/repo) |
-| 💬 **MemGPT Agent with Chat** | A MemGPT agent that is pre-populated with an extended chat history and memories | [Download](https://example.com/item1.af) | [GitHub](https://github.com/example/repo) |
-| 📚 **Research Agent** | A agent with planning, search, and memory tools to enable writing deep research reports | [Download](https://example.com/item2.af) | [GitHub](https://github.com/example/repo) |
-| 🛒 **Customer Support Agent** | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://example.com/item3.af) | [GitHub](https://github.com/example/repo) |
-| 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository | [Download](https://example.com/item3.af) | [GitHub](https://github.com/example/repo) |
-| ⚙️ **Workflow Agent** | A stateless workflow agent with no memory and deterministic tool calling workflows | [Download](https://example.com/item4.af) | [GitHub](https://github.com/example/repo) |
+|        Agent Type            | Description | Download |
+|------------------------------|------------|----------|
+| 🧠 **MemGPT Agent**          ([README](example.com))| An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download](https://example.com/item1.af) |
+| 💬 **MemGPT Agent with Chat** | A MemGPT agent that is pre-populated with an extended chat history and memories | [Download](https://example.com/item1.af) |
+| 📚 **Deep Research Agent** ([README](example.com))| A agent with planning, search, and memory tools to enable writing deep research reports | [Download](https://example.com/item2.af) |
+| 🛒 **Customer Support Agent** ([README](example.com))| A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://example.com/item3.af) |
+| 🐙 **Composio Agent** ([README](example.com))| An example of an agent that uses a Composio tool to star a GitHub repository | [Download](https://example.com/item3.af) |
+| ⚙️ **Workflow Agent** ([README](example.com))| A stateless workflow agent with no memory and deterministic tool calling workflows | [Download](https://example.com/item4.af) | 
 
 ## FAQ
 
