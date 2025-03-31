@@ -83,6 +83,13 @@ Theoretically, other frameworks could also load in .af files if they convert the
 
 Agents have associated secrets for tool execution. When you export agents with secrets, the secrets are set to `null`.
 
+## Roadmap 
+- [ ] Support archival memory passages
+- [ ] Support data sources (i.e. files)
+- [ ] Migration support between schema changes
+- [ ] Multi-agent `.af` files
+- [ ] Converters between frameworks 
+
 ---
 
 <div align="center">
