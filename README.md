@@ -15,6 +15,10 @@
 </div>
 
 <p align="center">
+View Schema // Watch Tutorial Video // Download Examples 
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-demo.gif" alt="Agent File Demo" width="700">
 </p>
 
