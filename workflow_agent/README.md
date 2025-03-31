@@ -7,8 +7,8 @@ The workflow agent is configured to have:
 * No message persistence between agent invocations (by setting `message_buffer_autoclear=True`)
 * No default Letta tools (tools for memory management or multi-agent communication)
 * Empty `system` prompt for the agent (avoid unnecessary tokens) 
-  
-With this, we can create a Letta agent with very little overhead on the number of tokens. 
+
+Note that you can still re-enable some of these features: for example, you can re-enable memory blocks and memory editing tools to still allow the agent to learn over time, even if it doesn't persist messages across invocations. 
 
 ## Workflow Graph 
 We define a set of tools and tool rules to create the following stateless workflow agent for evaluating recruiting candidate targets, and emailing candidates that pass the evaluation criteria: 
