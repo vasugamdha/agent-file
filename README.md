@@ -40,12 +40,11 @@ To use one of the agents, simply download the agent file (`.af`) and upload it t
 
 |        Agent Type            | Description | Download |
 |------------------------------|------------|----------|
-| 🧠 **MemGPT Agent**          ([README](example.com))| An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download](https://example.com/item1.af) |
-| 💬 **MemGPT Agent with Chat** | A MemGPT agent that is pre-populated with an extended chat history and memories | [Download](https://example.com/item1.af) |
-| 📚 **Deep Research Agent** ([README](example.com))| A agent with planning, search, and memory tools to enable writing deep research reports | [Download](https://example.com/item2.af) |
+| 🧠 **MemGPT Agent**          ([README](example.com))| An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download (empty)](https://example.com/item1.af) [Download (with pre-fill)](https://example.com/item1.af) |
+| 📚 **Deep Research Agent** ([README](example.com))| A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research | [Download](https://example.com/item2.af) |
 | 🛒 **Customer Support Agent** ([README](example.com))| A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://example.com/item3.af) |
+| ⚙️ **Graph Workflow Agent** ([README](example.com))| A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://example.com/item4.af) | 
 | 🐙 **Composio Agent** ([README](example.com))| An example of an agent that uses a Composio tool to star a GitHub repository | [Download](https://example.com/item3.af) |
-| ⚙️ **Workflow Agent** ([README](example.com))| A stateless workflow agent with no memory and deterministic tool calling workflows | [Download](https://example.com/item4.af) | 
 
 ## FAQ
 
