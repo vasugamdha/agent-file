@@ -1,10 +1,9 @@
 <a href="https://docs.letta.com/">
   <img alt="Agent File (.af): An open standard file format for stateful agents." src="/assets/agentfile.png">
-  <h1 align="center">Agent File (.af)</h1>
 </a>
 
 <p align="center">
-  An open standard file format for stateful agents
+    <b>Agent File (.af): An open standard file format for stateful agents</b>.
 </p>
 
 <div align="center">
