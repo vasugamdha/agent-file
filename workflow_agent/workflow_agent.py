@@ -50,6 +50,7 @@ reject_tool = client.tools.upsert_from_function(func=reject)
 
 # create agent
 agent = client.agents.create(
+    system="", 
     name="outreach_workflow_agent", 
     description="An simple workflow agent that has memory disabled, so that each request is independent.",
     memory_blocks=[], 
