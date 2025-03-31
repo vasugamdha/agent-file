@@ -5,14 +5,20 @@ Letta agents are by default designed to be stateful and have advanced memory cap
 The workflow agent is configured to:
 * Have no memory blocks
 * Clear the in-context messages on every agent invocation
-* Have no default tools
-
+* Have no default tools (tools for memory management or multi-agent communication)
+  
+With this, we can create a Letta agent that is essentially a stateless workflow agent. 
 ## Workflow Graph 
-We can define the workflow graph by using tool rules on the tools. The agent in this example is a email drafting workflow for recruiting candidates that has the following tools:
+We define a set of tools and tool rules to create the following stateless workflow agent for evaluating recruiting candidate targets, and emailing candidates that pass the evaluation criteria: 
+
+<img width="628" alt="image" src="https://github.com/user-attachments/assets/45f91654-b7e0-40b7-91b6-3b2fbf4dd81e" />
+
+We define the following set of tools for the agent: 
 - `retrieve_candidate`: Retrieve a candidate based on their name
-- `evaluate_candidate`: Evaluate a candidate based on their name
-- `send_email`: Send an email to a candidate
+- `evaluate_candidate`: Evaluate a candidate based on their name, and return `True` if we want to contact the candidate, `False` otherwise
+- `send_email`: Send an email to a candidate by specifying their name and the email content to send 
 - `reject`: Reject a candidate
+  
 We can define the rules for the workflow graph by specifying tool rules, which define the order in which tools are executed and the conditions under which a tool is called. For this agent, we define the following tool rules:
 - `retrieve_candidate` is run first
 - `evaluate_candidate` is run after `retrieve_candidate`
