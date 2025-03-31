@@ -3,7 +3,7 @@
 </a>
 
 <p align="center">
-    <b>Agent File (.af): An open standard file format for stateful agents</b>.
+    <br /><b>Agent File (.af): An open standard file format for stateful agents</b>.
 </p>
 
 <div align="center">
