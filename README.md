@@ -1,16 +1,14 @@
+<a href="https://docs.letta.com/">
+  <img alt="Agent File (.af): An open standard file format for stateful agents." src="/assets/agentfile.png">
+  <h1 align="center">Agent File (.af)</h1>
+</a>
+
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-banner-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-banner-light.png">
-    <img alt="Agent File banner" src="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-banner-dark.png" width="700">
-  </picture>
+  An open standard file format for stateful agents
 </p>
 
 <div align="center">
-<h1>Agent File (.af)</h1>
-
-**An open standard file format for stateful agents**
-
+  
 [![Discord](https://img.shields.io/discord/1161736243340640419?label=Discord&logo=discord&logoColor=5865F2&style=flat-square&color=5865F2)](https://discord.gg/letta)
 [![GitHub](https://img.shields.io/github/stars/letta-ai/agent-file?style=flat-square&logo=github&label=Stars&color=gold)](https://github.com/letta-ai/agent-file)
 [![License](https://img.shields.io/badge/License-Apache%202.0-silver?style=flat-square)](LICENSE)
