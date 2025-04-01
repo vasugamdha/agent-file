@@ -40,11 +40,11 @@ To use one of the agents, simply download the agent file (`.af`) and upload it t
 
 |        Agent Type            | Description | Download |
 |------------------------------|------------|----------|
-| 🧠 **MemGPT Agent**          ([README](example.com))| An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download (empty)](https://example.com/item1.af) [Download (with pre-fill)](https://example.com/item1.af) |
-| 📚 **Deep Research Agent** ([README](example.com))| A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research | [Download](https://example.com/item2.af) |
-| 🛒 **Customer Support Agent** ([README](example.com))| A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://example.com/item3.af) |
-| ⚙️ **Stateless Workflow Agent** ([README](example.com))| A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://example.com/item4.af) | 
-| 🐙 **Composio Agent** ([README](example.com))| An example of an agent that uses a Composio tool to star a GitHub repository | [Download](https://example.com/item3.af) |
+| 🧠 **MemGPT Agent**          | An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download (empty)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent.af) [Download (with pre-fill)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent_with_convo.af) |
+| 📚 **Deep Research Agent** | A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research (requires [Tavily](https://tavily.com/) and [Firecrawl](https://www.firecrawl.dev/) keys)| [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/deep_research_agent.af) |
+| 🛒 **Customer Support Agent** | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/customer_service.af) |
+| ⚙️ **Stateless Workflow Agent** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://example.com/item4.af) | 
+| 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
 
 ## FAQ
 
@@ -84,6 +84,7 @@ Theoretically, other frameworks could also load in .af files if they convert the
 Agents have associated secrets for tool execution. When you export agents with secrets, the secrets are set to `null`.
 
 ## Roadmap 
+- [ ] Agent connect to an MCP server
 - [ ] Support archival memory passages
 - [ ] Support data sources (i.e. files)
 - [ ] Migration support between schema changes
