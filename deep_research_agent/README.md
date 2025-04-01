@@ -1,7 +1,17 @@
 # Deep Research Agent 
-> ⚠️ **Warning:** You will need a `TAVILITY_API_KEY` and `FIRECRAWL_API_KEY` to run this agent. 
+> ⚠️ **Warning:** You will need a `TAVILY_API_KEY` and `FIRECRAWL_API_KEY` to run this agent. 
 
-This is an agent inspired by OpenAI's [Deep Research Agent](https://github.com/openai/deep-research-agent). 
+This is an agent inspired by OpenAI's [Deep Research Agent]([https://github.com/openai/deep-research-agent](https://openai.com/index/introducing-deep-research/)). The agent repeatedly searches online sources to write a report to respond to a user query.  
+
+## Configuring Secrets 
+This example uses the agent's [`tool_exec_environment_variables`](https://docs.letta.com/api-reference/agents/create#request.body.tool_exec_environment_variables) to set custom enviornment variables for the agent. This allows the agent to access API keys when executing tools. When you load the agent, you will need to fill in the enviornemnt variable with your own values. To do this, click "Variables" in the ADE's agent simulator: 
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/420450ef-f34f-418c-878f-68150c538271" />
+
+Then, set `TAVILY_API_KEY` and `FIRECRAWL_API_KEY`: 
+
+<img width="766" alt="image" src="https://github.com/user-attachments/assets/d37a5594-aeb0-4849-af98-d079d1777147" />
+
 
 ## Tools 
 The agent has a set of tools for performing deep research: 
