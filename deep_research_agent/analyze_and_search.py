@@ -2,12 +2,13 @@ from typing import List, Optional
 
 def analyze_and_search_tool(agent_state: "AgentState", summary: str, gaps: List[str], next_search_topic: str): 
     """
-    You are a research agent analyzing findings about a specified topic. If you need to search for more information, include a next_search_topic. If you need to extract information from a specific URL, include a url_to_extract. If I have enough information, set request_heartbeat to false.
+    Use this tool to analyze your current research summary and gaps and choose a new topic to search in `next_search_topic`. This tool will search the web for information related to the provide topic, and extract relevant information from webpages found through the search. Search results are not returned by the tool, but saved in the <research_state> memory block. 
 
     Args: 
         summary (str): A summary of the findings
         gaps (List[str]): A list of gaps in the findings
         next_search_topic (str): A topic to search for more information
+
     """
     from firecrawl import FirecrawlApp
     import requests
