@@ -44,7 +44,7 @@ To use one of the agents, simply download the agent file (`.af`) and upload it t
 | 📚 **Deep Research Agent** | A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research (requires [Tavily](https://tavily.com/) and [Firecrawl](https://www.firecrawl.dev/) keys)| [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/deep_research_agent.af) |
 | 🛒 **Customer Support Agent** | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/customer_service.af) |
 | ⚙️ **Stateless Workflow Agent** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://example.com/item4.af) | 
-| 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
+| 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/)) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
 
 ## FAQ
 
