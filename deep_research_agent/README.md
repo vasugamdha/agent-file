@@ -3,6 +3,9 @@
 
 This is an agent inspired by OpenAI's [Deep Research Agent]([https://github.com/openai/deep-research-agent](https://openai.com/index/introducing-deep-research/)). The agent repeatedly searches online sources to write a report to respond to a user query.  
 
+<img width="1434" alt="image" src="https://github.com/user-attachments/assets/1e486837-331c-4125-803a-090e74ff1aa4" />
+
+
 ## Configuring Secrets 
 This example uses the agent's [`tool_exec_environment_variables`](https://docs.letta.com/api-reference/agents/create#request.body.tool_exec_environment_variables) to set custom enviornment variables for the agent. This allows the agent to access API keys when executing tools. When you load the agent, you will need to fill in the enviornemnt variable with your own values. To do this, click "Variables" in the ADE's agent simulator: 
 
