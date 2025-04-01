@@ -14,7 +14,6 @@ def analyze_and_search_tool(agent_state: "AgentState", summary: str, gaps: List[
     import requests
     import json
     import os
-    from concurrent.futures import ThreadPoolExecutor
 
     # Input validation
     if not next_search_topic or not isinstance(next_search_topic, str):
