@@ -27,7 +27,6 @@ The agent has a set of tools for performing deep research:
 
 ## Tool Rules  
 Although it is possible to have the agent be fully autonomous and always choose what tools to call when, we can improve reliability by also adding tool rules to constrain the agent's behavior. We add tool rules to enforce that: 
-- `create_research_plan` is run first
 - `analyze_and_search` is run after `create_research_plan`
 - `evaluate_progress` is run after `analyze_and_search`
 - `analyze_and_search` is run a maximum of 3 times
