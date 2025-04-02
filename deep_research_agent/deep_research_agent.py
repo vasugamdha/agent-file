@@ -92,7 +92,7 @@ def write_final_report(agent_state: "AgentState", title, sections, conclusion, c
     report += f"\n# {title}"
     for section in sections:
         report += f"\n\n## {section.title}\n\n"
-        report += section.content + "\n\n"
+        report += section.content
     report += f"\n\n# Conclusion\n\n"
     report += conclusion
     report += f"\n\n# Citations\n\n"
