@@ -39,39 +39,100 @@ To use one of the agents, download the agent file (`.af`) by clicking the link b
 | 🕸️ **Stateless Workflow** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/outreach_workflow_agent.af) | [README](./workflow_agent) | 
 | 🐙 **Composio Tools** | An example of an agent that uses a Composio tool to star a GitHub repository <br />⚠️ *Note: requires enabling [Composio](https://docs.letta.com/guides/agents/composio)* | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) | [README](./composio_github_star_agent) |
 
-## Using `.af` with Letta 
+## Using `.af` with Letta
 
-### Importing Agents 
-You can load downloaded `.af` files into your ADE (running with Docker, Desktop, or Letta Cloud) to re-create the agent: 
+You can import and export `.af` files to and from any Letta Server (self-deployed with [Docker](https://docs.letta.com/quickstart/docker) or [Letta Desktop](https://docs.letta.com/quickstart/desktop), or via [Letta Cloud](https://docs.letta.com/quickstart/cloud)). To run the import and export commands, you can use the visual Agent Development Environment ([ADE](https://docs.letta.com/agent-development-environment)), or the REST APIs or developer SDKs (Python and TypeScript).
+
+### Importing Agents
+
+Load downloaded `.af` files into your ADE to easily re-create your agent: 
+
 ![Importing Demo](./assets/import_demo.gif)
 
 #### cURL
+
 ```sh
+# Assuming a Letta Server is running at http://localhost:8283
 curl -X GET http://localhost:8283/v1/agents/{AGENT_ID}/export
 ```
+
 #### Python
+
 ```python
+# pip install letta-client
 from letta_client import Letta
+
+# Assuming a Letta Server is running at http://localhost:8283
 client = Letta(base_url="http://localhost:8283")
-schema = client.agents.export_agent_serialized(agent_id=<AGENT_ID>)
+
+# Export your agent into a serialized schema object (which you can write to a file)
+schema = client.agents.export_agent_serialized(agent_id="<AGENT_ID>")
 ```
 
+### Node.js (TypeScript)
 
+```ts
+// npm install @letta-ai/letta-client
+import { LettaClient } from '@letta-ai/letta-client'
+
+// Assuming a Letta Server is running at http://localhost:8283
+const client = new LettaClient({ baseUrl: "http://localhost:8283" });
+
+// Export your agent into a serialized schema object (which you can write to a file)
+const schema = await client.agents.exportAgentSerialized({ agentId: "<AGENT_ID>" });
+```
 
 ### Exporting Agents 
+
 You can export your own `.af` files to share (or contribute!) by selecting "Export Agent" in the ADE: 
+
 ![Exporting Demo](./assets/export_demo.gif)
 
 #### cURL
+
 ```sh
+# Assuming a Letta Server is running at http://localhost:8283
 curl -X POST "http://localhost:8283/v1/agents/import" -F "file=/path/to/agent/file.af"
 ```
+
 #### Python
+
 ```python
+# pip install letta-client
 from letta_client import Letta
+
+# Assuming a Letta Server is running at http://localhost:8283
 client = Letta(base_url="http://localhost:8283")
+
+# Import your .af file from any location
 agent_state = client.agents.import_agent_serialized(file=open("/path/to/agent/file.af", "rb"))
+
 print(f"Imported agent: {agent.id}")
+```
+
+#### Node.js (TypeScript)
+
+```ts
+// npm install @letta-ai/letta-client
+import { LettaClient } from '@letta-ai/letta-client'
+
+// Assuming a Letta Server is running at http://localhost:8283
+const client = new LettaClient({ baseUrl: "http://localhost:8283" });
+
+// Import your .af file from any location
+const importAgent = async () => {
+  try {
+    const fileBuffer = fs.readFileSync('/path/to/agent/file.af');
+    const agentState = await client.agents.importAgentSerialized({
+      file: new Blob([fileBuffer])
+    });
+    console.log(`Imported agent: ${agentState.id}`);
+  } catch (error) {
+    console.error('Error importing agent:', error);
+  }
+};
+
+console.log(`Imported agent: ${agentState.id}`);
 ```
 
 ## FAQ
