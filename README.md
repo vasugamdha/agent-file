@@ -55,10 +55,10 @@ You can export your own `.af` files to share (or contribute!) by selecting "Expo
 
 The AI ecosystem is witnessing rapid growth in agent development, with each framework implementing its own storage mechanisms. Agent File addresses the need for a standard that enables:
 
-- **Portability**: Move agents between systems or deploy them to new environments
-- **Collaboration**: Share your agents with other developers and the community
-- **Preservation**: Archive agent configurations to preserve your work
-- **Versioning**: Track changes to agents over time through a standardized format
+- 🔄 **Portability**: Move agents between systems or deploy them to new environments
+- 🤝 **Collaboration**: Share your agents with other developers and the community
+- 💾 **Preservation**: Archive agent configurations to preserve your work
+- 📝 **Versioning**: Track changes to agents over time through a standardized format
 
 ### What state does `.af` include?
 
@@ -88,7 +88,7 @@ Adding `.af` support requires mapping Agent File components (agent state) to you
 
 For implementation details or to contribute to Agent File, join our [Discord community](https://discord.gg/letta) or check the [Letta GitHub repository](https://github.com/letta-ai/letta).
 
-### How does .af handle secrets?
+### How does `.af` handle secrets?
 
 Agents have associated secrets for tool execution in Letta (see [docs](https://docs.letta.com/guides/agents/tool-variables)). When you export agents with secrets, the secrets are set to `null`.
 
