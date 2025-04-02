@@ -1,6 +1,5 @@
-from re import A
 from letta_client import Letta
-from typing import List, Dict
+from typing import List
 from pydantic import BaseModel, Field
 from analyze_and_search import analyze_and_search_tool
 import os
@@ -33,7 +32,7 @@ def create_research_plan(agent_state: "AgentState", research_plan: List[str], to
         agent_state.memory.get_block("research").value = ""
 
     research_state = {"topic": topic, "summaries": [], "findings": [], "plan_step": 1}
-    research_plan_str = """ The plan of action is to research the following: \n"""
+    research_plan_str = """The plan of action is to research the following: \n"""
     for i, step in enumerate(research_plan):
         research_plan_str += f"Step {i+1} - {step}\n"
 
@@ -52,7 +51,7 @@ def evaluate_progress(agent_state: "AgentState", complete_research: bool):
     Args:
         complete_research (bool): Whether to complete research. Have all the planned steps been completed? If so, complete.
     """
-    return complete_research
+    return f"Confirming: research progress is {'complete' if complete_research else 'ongoing'}."
 
 
 class ReportSection(BaseModel):
@@ -85,8 +84,10 @@ class Report(BaseModel):
     )
 
 
-def write_final_report(title, sections, conclusion, citations):
+def write_final_report(agent_state: "AgentState", title, sections, conclusion, citations):
     """Generate the final report based on the research process."""
+
+    # Turn the report into markdown format
     report = ""
     report += f"# {title}\n\n"
     for section in sections:
@@ -97,7 +98,12 @@ def write_final_report(title, sections, conclusion, citations):
     report += f"# Citations\n\n"
     for citation in citations:
         report += f"- {citation}\n"
-    return report
+
+    # Write the markdown report for safekeeping into a memory block
+    # (Optional, could also store elsewhere, like write to a file)
+    agent_state.memory.update_block_value(label="final_report", value=report)
+
+    return "Your report has been successfully stored inside of memory section final_report. Next step: return the completed report to the user using send_message so they can review it (keep the markdown formatting, assume the user is using a markdown-compatible viewer)."
 
 
 # create tools
@@ -124,6 +130,7 @@ agent = client.agents.create(
     memory_blocks=[
         {"label": "research_plan", "value": ""},
         {"label": "research", "value": "", "limit": 50000},  # characters: big limit to be safe
+        {"label": "final_report", "value": "", "limit": 50000},  # characters: big limit to be safe
     ],
     model="anthropic/claude-3-7-sonnet-20250219",
     embedding="openai/text-embedding-ada-002",
@@ -146,7 +153,8 @@ agent = client.agents.create(
             "max_count_limit": 3,  # max iteration count of research per-invocation
             "tool_name": "analyze_and_search_tool",
         },
-        {"type": "exit_loop", "tool_name": "write_final_report"},
+        # {"type": "exit_loop", "tool_name": "write_final_report"},  # alternatively, make write_final_report an exit loop
+        {"type": "constrain_child_tools", "tool_name": "write_final_report", "children": ["send_message"]},
         {"type": "exit_loop", "tool_name": "send_message"},
     ],
 )
