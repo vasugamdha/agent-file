@@ -45,9 +45,34 @@ To use one of the agents, download the agent file (`.af`) by clicking the link b
 You can load downloaded `.af` files into your ADE (running with Docker, Desktop, or Letta Cloud) to re-create the agent: 
 ![Importing Demo](./assets/import_demo.gif)
 
+#### cURL
+```sh
+curl -X GET http://localhost:8283/v1/agents/{AGENT_ID}/export
+```
+#### Python
+```python
+from letta_client import Letta
+client = Letta(base_url="http://localhost:8283")
+schema = client.agents.export_agent_serialized(agent_id=<AGENT_ID>)
+```
+
+
+
 ### Exporting Agents 
 You can export your own `.af` files to share (or contribute!) by selecting "Export Agent" in the ADE: 
 ![Exporting Demo](./assets/export_demo.gif)
+
+#### cURL
+```sh
+curl -X POST "http://localhost:8283/v1/agents/import" -F "file=/path/to/agent/file.af"
+```
+#### Python
+```python
+from letta_client import Letta
+client = Letta(base_url="http://localhost:8283")
+agent_state = client.agents.import_agent_serialized(file=open("/path/to/agent/file.af", "rb"))
+print(f"Imported agent: {agent.id}")
+```
 
 ## FAQ
 
