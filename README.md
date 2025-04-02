@@ -13,9 +13,11 @@
 
 </div>
 
-<p align="center">
-[View Schema]() // [Download Examples]()
-</p>
+<div align="center">
+  
+[ [View .af Schema]() ] [ [Download .af Examples]() ]
+
+</div>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-demo.gif" alt="Agent File Demo" width="700">
@@ -34,9 +36,9 @@ By standardizing these components in a single file format, Agent File enables se
 
 ## 👾 Download Example Agents
 
-Browse our collection of ready-to-use agents.
+Browse our collection of ready-to-use agents. To contribute your own Agent File to the repo, simply [open a pull request](https://github.com/letta-ai/agent-file/compare)!
 
-To use one of the agents, simply download the agent file (`.af`) and upload it to Letta (instructions [here]()), or any other framework that supports agent files.
+To use one of the agents, download the agent file (`.af`) by clicking the link below, then upload it to Letta or any other framework that supports agent files.
 
 |        Agent Type            | Description | Download |
 |------------------------------|------------|----------|
@@ -46,7 +48,7 @@ To use one of the agents, simply download the agent file (`.af`) and upload it t
 | ⚙️ **Stateless Workflow Agent** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/outreach_workflow_agent.af) | 
 | 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/)) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
 
-## Using .af with Letta 
+## Using `.af` with Letta 
 
 ### Importing Agents 
 You can load downloaded `.af` files into your ADE (running with Docker, Desktop, or Letta Cloud) to re-create the agent: 
