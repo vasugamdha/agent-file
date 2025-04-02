@@ -15,7 +15,7 @@
 
 <div align="center">
   
-[ [View .af Schema](#what-state-does-af-include) ] [ [Download .af Examples](#-download-example-agents) ]
+[ [View .af Schema](#what-state-does-af-include) ] [ [Download .af Examples](#-download-example-agents) ] [ [Contributing](#-contributing) ]
 
 </div>
 
@@ -91,6 +91,15 @@ For implementation details or to contribute to Agent File, join our [Discord com
 ### How does `.af` handle secrets?
 
 Agents have associated secrets for tool execution in Letta (see [docs](https://docs.letta.com/guides/agents/tool-variables)). When you export agents with secrets, the secrets are set to `null`.
+
+## 🤝 Contributing
+
+We're just launching Agent File and would love your help in shaping its future:
+
+- **Share Example Agents**: Contribute your own `.af` files by [opening a pull request](https://github.com/letta-ai/agent-file/compare) with your agent and usage instructions
+- **Join the Discussion**: Connect with other agent developers in our [Discord server](https://discord.gg/letta) to share ideas and agent files
+- **Provide Feedback**: Open [GitHub issues](https://github.com/letta-ai/agent-file/issues) with suggestions, feature requests, or to report compatibility challenges
+- **Help Refine the Format**: As an emerging format, Agent File will evolve based on community input and real-world usage
 
 ## Roadmap 
 - [ ] Support MCP servers/configs
