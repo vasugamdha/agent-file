@@ -106,6 +106,6 @@ Agents have associated secrets for tool execution in Letta (see [docs](https://d
   
 Made with ❤️ by the Letta team and OSS contributors
 
-**[Documentation](https://docs.letta.com)** • **[Community](https://discord.gg/letta)** • **[GitHub](https://github.com/letta-ai/letta)**
+**[Documentation](https://docs.letta.com)** • **[Community](https://discord.gg/letta)** • **[GitHub](https://github.com/letta-ai)**
 
 </div>
