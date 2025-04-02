@@ -89,13 +89,13 @@ def write_final_report(agent_state: "AgentState", title, sections, conclusion, c
 
     # Turn the report into markdown format
     report = ""
-    report += f"# {title}\n\n"
+    report += f"\n# {title}"
     for section in sections:
-        report += f"## {section.title}\n\n"
+        report += f"\n\n## {section.title}\n\n"
         report += section.content + "\n\n"
-    report += f"# Conclusion\n\n"
+    report += f"\n\n# Conclusion\n\n"
     report += conclusion
-    report += f"# Citations\n\n"
+    report += f"\n\n# Citations\n\n"
     for citation in citations:
         report += f"- {citation}\n"
 
@@ -103,7 +103,7 @@ def write_final_report(agent_state: "AgentState", title, sections, conclusion, c
     # (Optional, could also store elsewhere, like write to a file)
     agent_state.memory.update_block_value(label="final_report", value=report)
 
-    return "Your report has been successfully stored inside of memory section final_report. Next step: return the completed report to the user using send_message so they can review it (keep the markdown formatting, assume the user is using a markdown-compatible viewer)."
+    return "Your report has been successfully stored inside of memory section final_report. Next step: return the completed report to the user using send_message so they can review it (make sure to preserve the markdown formatting, assume the user is using a markdown-compatible viewer)."
 
 
 # create tools
