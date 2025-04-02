@@ -9,28 +9,28 @@
 <div align="center">
   
 [![Discord](https://img.shields.io/discord/1161736243340640419?label=Discord&logo=discord&logoColor=5865F2&style=flat-square&color=5865F2)](https://discord.gg/letta)
-[![GitHub](https://img.shields.io/github/stars/letta-ai/agent-file?style=flat-square&logo=github&label=Stars&color=gold)](https://github.com/letta-ai/agent-file)
 [![License](https://img.shields.io/badge/License-Apache%202.0-silver?style=flat-square)](LICENSE)
 
 </div>
 
 <p align="center">
-View Schema // Watch Tutorial Video // Download Examples 
+[View Schema]() // [Download Examples]()
 </p>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-demo.gif" alt="Agent File Demo" width="700">
 </p>
 
-Agent File (.af) is an open standard file format for serializing stateful agents. Originally designed for the [Letta](https://letta.com) framework, Agent File provides a portable, standardized way to share agents with persistent memory and behavior.
+**Agent File (`.af`)** is an open standard file format for serializing [stateful agents](https://www.letta.com/blog/stateful-agents). Originally designed for the [Letta](https://letta.com) framework, Agent File provides a portable, standardized way to share agents with persistent memory and behavior.
 
 Agent Files encapsulate all of the components of a stateful agent:
-- Core memory blocks storing agent personality and user information
-- Tool configurations for interacting with external systems
-- Memory management settings and archival data connections
-- LLM provider configurations and model parameters
+- Read-only system instructions
+- Read-write in-context ("core") memory blocks for storing agent personality, user information, task and planning steps, etc.
+- Tool configurations (source code and schemas) for interacting with external systems and APIs
+- Memory management settings (summarization mechanisms) and archival data connections (external data stores)
+- LLM/embedding provider configurations and model parameters
 
-By standardizing these components in a single file format, Agent File enables seamless transfer of agents between systems, promotes collaboration among developers, and simplifies deployment across environments.
+By standardizing these components in a single file format, Agent File enables seamless transfer and sharing of agents between compatible agent servers or frameworks. By serializing the state of an agent to a portable format, Agent File also allows for easy checkpointing and version control of agent state.
 
 ## 👾 Download Example Agents
 
