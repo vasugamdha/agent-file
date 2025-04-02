@@ -23,12 +23,7 @@
 
 **Agent File (`.af`)** is an open standard file format for serializing [stateful agents](https://www.letta.com/blog/stateful-agents). Originally designed for the [Letta](https://letta.com) framework, Agent File provides a portable, standardized way to share agents with persistent memory and behavior.
 
-Agent Files encapsulate all of the components of a stateful agent:
-- Read-only system instructions
-- Read-write in-context ("core") memory blocks for storing agent personality, user information, task and planning steps, etc.
-- Tool configurations (source code and schemas) for interacting with external systems and APIs
-- Memory management settings (summarization mechanisms) and archival data connections (external data stores)
-- LLM/embedding provider configurations and model parameters
+Agent Files encapsulate all of the components of a stateful agent: system prompts, editable memory (your agent's personality and learned information about t the user), tool configurations (source code and schemas), and LLM/model configurations.
 
 By standardizing these components in a single file format, Agent File enables seamless transfer and sharing of agents between compatible agent servers or frameworks. By serializing the state of an agent to a portable format, Agent File also allows for easy checkpointing and version control of agent state.
 
