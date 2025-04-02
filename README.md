@@ -15,7 +15,7 @@
 
 <div align="center">
   
-[ [View .af Schema]() ] [ [Download .af Examples]() ]
+[ [View .af Schema](#what-state-does-af-include) ] [ [Download .af Examples](#-download-example-agents) ]
 
 </div>
 
@@ -36,17 +36,19 @@ By standardizing these components in a single file format, Agent File enables se
 
 ## 👾 Download Example Agents
 
-Browse our collection of ready-to-use agents. To contribute your own Agent File to the repo, simply [open a pull request](https://github.com/letta-ai/agent-file/compare)!
+Browse our collection of ready-to-use agents below. Each agent has a direct download link (to download the `.af` file) and a separate instructions README with a guide on how to use 
+
+To contribute your own Agent File to the repo, simply [open a pull request](https://github.com/letta-ai/agent-file/compare)!
 
 To use one of the agents, download the agent file (`.af`) by clicking the link below, then upload it to Letta or any other framework that supports agent files.
 
-|        Agent Type            | Description | Download |
-|------------------------------|------------|----------|
-| 🧠 **MemGPT Agent**          | An agent with memory management tools for infinite context, as described in the MemGPT paper | [Download (empty)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent.af) [Download (with pre-fill)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent_with_convo.af) |
-| 📚 **Deep Research Agent** | A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research (requires [Tavily](https://tavily.com/) and [Firecrawl](https://www.firecrawl.dev/) keys)| [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/deep_research_agent.af) |
-| 🛒 **Customer Support Agent** | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/customer_service.af) |
-| ⚙️ **Stateless Workflow Agent** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/outreach_workflow_agent.af) | 
-| 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/)) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
+|        Agent Type            | Description | Download | Instructions |
+|------------------------------|------------|----------|-------------|
+| 🧠 **MemGPT**          | An agent with memory management tools for infinite context, as described in the [MemGPT paper](https://research.memgpt.ai/). Two example files: a fresh agent and one with an existing conversation history (pre-fill). | [Download (empty)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent.af) [Download (pre-fill)](https://letta-agent-files.s3.us-east-1.amazonaws.com/memgpt_agent_with_convo.af) | [README](./memgpt_agent) |
+| 📚 **Deep Research** | A research agent with planning, search, and memory tools to enable writing deep research reports from iterative research <br />⚠️ *NOTE: requires [Tavily](https://tavily.com/) and [Firecrawl](https://www.firecrawl.dev/) keys* | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/deep_research_agent.af) | [README](./deep_research_agent) |
+| 🧑‍💼 **Customer Support** | A customer support agent that has dummy tools for handling order cancellations, looking up order status, and also memory | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/customer_service.af) | [README](./customer_service_agent) |
+| 🕸️ **Stateless Workflow** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/outreach_workflow_agent.af) | [README](./workflow_agent) | 
+| 🐙 **Composio Tools** | An example of an agent that uses a Composio tool to star a GitHub repository <br />⚠️ *Note: requires enabling [Composio](https://docs.letta.com/guides/agents/composio)* | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) | [README](./composio_github_star_agent) |
 
 ## Using `.af` with Letta 
 
@@ -69,9 +71,9 @@ The AI ecosystem is witnessing rapid growth in agent development, with each fram
 - **Preservation**: Archive agent configurations to preserve your work
 - **Versioning**: Track changes to agents over time through a standardized format
 
-### What state does .af include?
+### What state does `.af` include?
 
-An .af file contains all the state required to re-create the exact same agent:
+A `.af` file contains all the state required to re-create the exact same agent:
 
 | Component | Description |
 |-----------|-------------|
@@ -83,17 +85,17 @@ An .af file contains all the state required to re-create the exact same agent:
 | Environment variables | Configuration values for tool execution |
 | Tools | Complete tool definitions including source code and JSON schema |
 
-We currently do not support Passages (the units of Archival Memory), which have support for them on the roadmap.
+We currently do not support Passages (the units of Archival Memory in Letta/MemGPT), which have support for them on the roadmap.
 
 You can view the entire schema of .af in the Letta repository [here](https://github.com/letta-ai/letta/blob/main/letta/serialize_schemas/pydantic_agent_schema.py).
 
-### Does .af work with frameworks other than Letta?
+### Does `.af` work with frameworks other than Letta?
 
-Theoretically, other frameworks could also load in .af files if they convert the state into their own representations. Some concepts, such as context window "blocks" which can be edited or shared between agents, are not implemented in other frameworks, so may need to be adapted per-framework.
+Theoretically, other frameworks could also load in `.af` files if they convert the state into their own representations. Some concepts, such as context window "blocks" which can be edited or shared between agents, are not implemented in other frameworks, so may need to be adapted per-framework.
 
 ### How does .af handle secrets?
 
-Agents have associated secrets for tool execution. When you export agents with secrets, the secrets are set to `null`.
+Agents have associated secrets for tool execution in Letta (see [docs](https://docs.letta.com/guides/agents/tool-variables)). When you export agents with secrets, the secrets are set to `null`.
 
 ## Roadmap 
 - [ ] Agent connect to an MCP server
@@ -106,8 +108,9 @@ Agents have associated secrets for tool execution. When you export agents with s
 ---
 
 <div align="center">
+  
+Made with ❤️ by the Letta team and OSS contributors
 
-**[Documentation](https://docs.letta.com/agentfile)** • **[Community](https://discord.gg/letta)** • **[GitHub](https://github.com/letta-ai/letta)**
+**[Documentation](https://docs.letta.com)** • **[Community](https://discord.gg/letta)** • **[GitHub](https://github.com/letta-ai/letta)**
 
-<small>Agent File is an open project under the Apache 2.0 license. © 2024 Letta Contributors</small>
 </div>
