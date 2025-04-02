@@ -41,7 +41,7 @@ To use one of the agents, download the agent file (`.af`) by clicking the link b
 
 ## Using `.af` with Letta
 
-You can import and export `.af` files to and from any Letta Server (self-deployed with [Docker](https://docs.letta.com/quickstart/docker) or [Letta Desktop](https://docs.letta.com/quickstart/desktop), or via [Letta Cloud](https://docs.letta.com/quickstart/cloud)). To run the import and export commands, you can use the visual Agent Development Environment ([ADE](https://docs.letta.com/agent-development-environment)), or the REST APIs or developer SDKs (Python and TypeScript).
+You can import and export `.af` files to and from any Letta Server (self-deployed with [Docker](https://docs.letta.com/quickstart/docker) or [Letta Desktop](https://docs.letta.com/quickstart/desktop), or via [Letta Cloud](https://docs.letta.com/quickstart/cloud)). To run the import and export commands, you can use the visual Agent Development Environment ([ADE](https://docs.letta.com/agent-development-environment)), or the [REST APIs](https://docs.letta.com/api-reference/overview) or [developer SDKs](https://docs.letta.com/api-reference/overview) (Python and TypeScript).
 
 ### Importing Agents
 
