@@ -19,10 +19,6 @@
 
 </div>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/letta-ai/agent-file/main/assets/agent-file-demo.gif" alt="Agent File Demo" width="700">
-</p>
-
 **Agent File (`.af`)** is an open standard file format for serializing [stateful agents](https://www.letta.com/blog/stateful-agents). Originally designed for the [Letta](https://letta.com) framework, Agent File provides a portable, standardized way to share agents with persistent memory and behavior.
 
 Agent Files encapsulate all of the components of a stateful agent:
