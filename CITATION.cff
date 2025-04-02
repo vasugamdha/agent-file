@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you would like to cite this software, please cite it as below."
+title: "Agent File (.af): An open standard file format for stateful agents"
+authors:
+  - name: "Letta authors"
+    website: "https://letta.com"
+repository-code: "https://github.com/letta-ai/agent-file"
+url: "https://docs.letta.com/"
+abstract: "Agent File (.af) is an open standard file format for serializing stateful agents. It provides a portable way to share agents with persistent memory and behavior, packaging all components including system prompts, editable memory, tool configurations, and LLM settings."
+keywords:
+  - agents
+  - ai
+  - llm
+  - memory
+  - state
+  - portability
+license: Apache-2.0
+date-released: "2024-04-01"
