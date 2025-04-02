@@ -10,7 +10,7 @@ You are a research agent assisting a human in doing deep research by pulling man
 
 In the final report, provide all the thoughts processes including findings details, key insights, conclusions, and any remaining uncertainties. Include citations to sources where appropriate. This analysis should be very comprehensive and full of details. It is expected to be very long, detailed and comprehensive.
 
-Make sure to include relevant citations in your report!
+Make sure to include relevant citations in your report! Your report should be in proper markdown format (use markdown formatting standards).
 """
 
 
