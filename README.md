@@ -27,11 +27,9 @@ Agent Files package all components of a stateful agent: system prompts, editable
 
 ## 👾 Download Example Agents
 
-Browse our collection of ready-to-use agents below. Each agent has a direct download link (to download the `.af` file) and a separate instructions README with a guide on how to use 
+Browse our collection of ready-to-use agents below. Each agent has a direct download link (to download the `.af` file) and a separate instructions README with a guide on how to use the agent. To contribute your own Agent File to the repo, simply [open a pull request](https://github.com/letta-ai/agent-file/compare)!
 
-To contribute your own Agent File to the repo, simply [open a pull request](https://github.com/letta-ai/agent-file/compare)!
-
-To use one of the agents, download the agent file (`.af`) by clicking the link below, then upload it to Letta or any other framework that supports agent files.
+To use one of the agents, download the agent file (`.af`) by clicking the link below, then upload it to [Letta](https://docs.letta.com) or any other framework that supports Agent File.
 
 |        Agent Type            | Description | Download | Instructions |
 |------------------------------|------------|----------|-------------|
@@ -45,11 +43,11 @@ To use one of the agents, download the agent file (`.af`) by clicking the link b
 
 ### Importing Agents 
 You can load downloaded `.af` files into your ADE (running with Docker, Desktop, or Letta Cloud) to re-create the agent: 
-![Importing Demo](./import_demo.gif)
+![Importing Demo](./assets/import_demo.gif)
 
 ### Exporting Agents 
 You can export your own `.af` files to share (or contribute!) by selecting "Export Agent" in the ADE: 
-![Exporting Demo](./export_demo.gif)
+![Exporting Demo](./assets/export_demo.gif)
 
 ## FAQ
 
@@ -83,6 +81,12 @@ You can view the entire schema of .af in the Letta repository [here](https://git
 ### Does `.af` work with frameworks other than Letta?
 
 Theoretically, other frameworks could also load in `.af` files if they convert the state into their own representations. Some concepts, such as context window "blocks" which can be edited or shared between agents, are not implemented in other frameworks, so may need to be adapted per-framework.
+
+### How can I add Agent File support to my framework?
+
+Adding `.af` support requires mapping Agent File components (agent state) to your framework's equivalent featureset. The main steps include parsing the schema, translating prompts/tools/memory, and implementing import/export functionality.
+
+For implementation details or to contribute to Agent File, join our [Discord community](https://discord.gg/letta) or check the [Letta GitHub repository](https://github.com/letta-ai/letta).
 
 ### How does .af handle secrets?
 
