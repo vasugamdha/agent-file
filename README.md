@@ -93,12 +93,12 @@ For implementation details or to contribute to Agent File, join our [Discord com
 Agents have associated secrets for tool execution in Letta (see [docs](https://docs.letta.com/guides/agents/tool-variables)). When you export agents with secrets, the secrets are set to `null`.
 
 ## Roadmap 
-- [ ] Agent connect to an MCP server
+- [ ] Support MCP servers/configs
 - [ ] Support archival memory passages
 - [ ] Support data sources (i.e. files)
 - [ ] Migration support between schema changes
 - [ ] Multi-agent `.af` files
-- [ ] Converters between frameworks 
+- [ ] Converters between frameworks
 
 ---
 
