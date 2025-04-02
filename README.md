@@ -46,6 +46,16 @@ To use one of the agents, simply download the agent file (`.af`) and upload it t
 | ⚙️ **Stateless Workflow Agent** | A stateless graph workflow agent (no memory and deterministic tool calling) that evaluates recruting candidates and drafts emails | [Download](https://example.com/item4.af) | 
 | 🐙 **Composio Agent** | An example of an agent that uses a Composio tool to star a GitHub repository (requires enabling [Composio](https://composio.dev/)) | [Download](https://letta-agent-files.s3.us-east-1.amazonaws.com/composio_github_star_agent.af) |
 
+## Using .af with Letta 
+
+### Importing Agents 
+You can load downloaded `.af` files into your ADE (running with Docker, Desktop, or Letta Cloud) to re-create the agent: 
+![Importing Demo](./import_demo.gif)
+
+### Exporting Agents 
+You can export your own `.af` files to share (or contribute!) by selecting "Export Agent" in the ADE: 
+![Exporting Demo](./export_demo.gif)
+
 ## FAQ
 
 ### Why Agent File?
