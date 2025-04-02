@@ -76,13 +76,13 @@ print(f"Imported agent: {agent.id}")
 ```ts
 // Install SDK with `npm install @letta-ai/letta-client`
 import { LettaClient } from '@letta-ai/letta-client'
+import { readFileSync } from 'fs';
+import { Blob } from 'buffer';
 
 // Assuming a Letta Server is running at http://localhost:8283
 const client = new LettaClient({ baseUrl: "http://localhost:8283" });
 
 // Import your .af file from any location
-import { readFileSync } from 'fs';
-import { Blob } from 'buffer';
 const file = new Blob([readFileSync('/path/to/agent/file.af')])
 const agentState = await client.agents.importAgentSerialized(file, {})
 
