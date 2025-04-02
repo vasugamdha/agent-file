@@ -70,31 +70,69 @@ def analyze_and_search_tool(agent_state: "AgentState", summary: str, gaps: List[
     except Exception as e:
         raise RuntimeError(f"Failed to retrieve or parse research state: {str(e)}")
 
-    findings = []
-    top_n = 3
-    count = 0
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
-    for result in results:
-        # Validate URL
+    def extract_data(result, research_topic):
         if not result.get("url"):
             print(f"Skipping result with missing URL: {result}")
-            continue
-
+            return None
+        
         try:
             data = app.extract(
                 [result["url"]],
                 {
-                    "prompt": f"Extract key information about {research_state.get('topic', 'the given topic')}. Focus on facts, data, and expert opinions."
+                    "prompt": f"Extract key information about {research_topic}. Focus on facts, data, and expert opinions."
                 },
             )
-
-            findings.append({"url": result["url"], "data": data["data"]})
-            count += 1
+            return {"url": result["url"], "data": data["data"]}
         except Exception as e:
             print(f"Failed to extract from {result['url']}: {str(e)}")
+            return None
+    
+    # Main code
+    findings = []
+    top_n = 3
+    research_topic = research_state.get('topic', 'the given topic')
+    
+    # Create a thread pool and submit tasks
+    with ThreadPoolExecutor(max_workers=top_n) as executor:
+        # Submit tasks for each result up to top_n
+        future_to_url = {
+            executor.submit(extract_data, result, research_topic): result
+            for result in results[:top_n] if result.get("url")
+        }
+        
+        # Collect results as they complete
+        for future in as_completed(future_to_url):
+            result = future.result()
+            if result:
+                findings.append(result)
 
-        if count >= top_n:
-            break
+    #findings = []
+    #top_n = 3
+    #count = 0
+
+    #for result in results:
+    #    # Validate URL
+    #    if not result.get("url"):
+    #        print(f"Skipping result with missing URL: {result}")
+    #        continue
+
+    #    try:
+    #        data = app.extract(
+    #            [result["url"]],
+    #            {
+    #                "prompt": f"Extract key information about {research_state.get('topic', 'the given topic')}. Focus on facts, data, and expert opinions."
+    #            },
+    #        )
+
+    #        findings.append({"url": result["url"], "data": data["data"]})
+    #        count += 1
+    #    except Exception as e:
+    #        print(f"Failed to extract from {result['url']}: {str(e)}")
+
+    #    if count >= top_n:
+    #        break
 
     # Update the state with error handling
     try:
