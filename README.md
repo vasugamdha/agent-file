@@ -83,9 +83,8 @@ const client = new LettaClient({ baseUrl: "http://localhost:8283" });
 // Import your .af file from any location
 import { readFileSync } from 'fs';
 import { Blob } from 'buffer';
-const fileBuffer = readFileSync('/path/to/agent/file.af');
-const file = new Blob([fileBuffer]);
-const agentState = await client.agents.importAgentSerialized(file, {});
+const file = new Blob([readFileSync('/path/to/agent/file.af')])
+const agentState = await client.agents.importAgentSerialized(file, {})
 
 console.log(`Imported agent: ${agentState.id}`);
 ```
