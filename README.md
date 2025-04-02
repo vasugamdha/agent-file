@@ -95,6 +95,14 @@ You can export your own `.af` files to share (or contribute!) by selecting "Expo
 
 ![Exporting Demo](./assets/export_demo.gif)
 
+
+#### cURL
+
+```sh
+# Assuming a Letta Server is running at http://localhost:8283
+curl -X GET http://localhost:8283/v1/agents/{AGENT_ID}/export
+```
+
 #### Node.js (TypeScript)
 
 ```ts
@@ -106,13 +114,6 @@ const client = new LettaClient({ baseUrl: "http://localhost:8283" });
 
 // Export your agent into a serialized schema object (which you can write to a file)
 const schema = await client.agents.exportAgentSerialized("<AGENT_ID>");
-```
-
-#### cURL
-
-```sh
-# Assuming a Letta Server is running at http://localhost:8283
-curl -X GET http://localhost:8283/v1/agents/{AGENT_ID}/export
 ```
 
 #### Python
