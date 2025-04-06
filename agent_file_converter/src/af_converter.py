@@ -126,6 +126,23 @@ class LangChainConverter(AgentFileConverter):
         # Extract system prompt
         system_prompt = self.agent_data.get("system_prompt", "")
         
+        # If system_prompt is missing, try to find it in system_message or from system role message
+        if not system_prompt:
+            system_prompt = self.agent_data.get("system_message", "")
+            
+            # If still not found, look for a system message in the messages array
+            if not system_prompt:
+                messages = self.agent_data.get("messages", [])
+                for msg in messages:
+                    if msg.get("role") == "system":
+                        system_prompt = self._get_message_content(msg)
+                        break
+                        
+            # If still empty, provide a default system message
+            if not system_prompt:
+                system_prompt = "You are a helpful AI assistant."
+                print("Warning: No system message found. Using default system message.")
+        
         # Extract memory blocks
         memory_blocks = self.agent_data.get("memory_blocks", [])
         
@@ -174,7 +191,7 @@ class LangChainConverter(AgentFileConverter):
             langchain_tool = {
                 "name": tool.get("name", ""),
                 "description": tool.get("description", ""),
-                "schema": tool.get("schema", {})
+                "parameters": tool.get("parameters", tool.get("schema", {}))
             }
             
             # If the tool has code, add it as a function string
@@ -254,6 +271,23 @@ class AutoGenConverter(AgentFileConverter):
         # Extract system prompt
         system_prompt = self.agent_data.get("system_prompt", "")
         
+        # If system_prompt is missing, try to find it in system_message or from system role message
+        if not system_prompt:
+            system_prompt = self.agent_data.get("system_message", "")
+            
+            # If still not found, look for a system message in the messages array
+            if not system_prompt:
+                messages = self.agent_data.get("messages", [])
+                for msg in messages:
+                    if msg.get("role") == "system":
+                        system_prompt = self._get_message_content(msg)
+                        break
+                        
+            # If still empty, provide a default system message
+            if not system_prompt:
+                system_prompt = "You are a helpful AI assistant."
+                print("Warning: No system message found. Using default system message.")
+        
         # Extract memory blocks
         memory_blocks = self.agent_data.get("memory_blocks", [])
         
@@ -279,7 +313,7 @@ class AutoGenConverter(AgentFileConverter):
                 "max_consecutive_auto_reply": 10,
                 "memory": self._convert_memory(memory_blocks),
                 "tools": self._convert_tools(tools),
-                "llm_config": self._convert_model_config(model_config),
+                "model": self._convert_model_config(model_config),
                 "context_summary": context_summary,
                 "chat_history": message_history
             }
@@ -319,11 +353,9 @@ class AutoGenConverter(AgentFileConverter):
     def _convert_model_config(self, model_config: Dict[str, Any]) -> Dict[str, Any]:
         """Convert model configuration to AutoGen format"""
         return {
-            "config_list": [{
-                "model": model_config.get("model", "").split("/")[-1],
-                "temperature": model_config.get("temperature", 0.7),
-                "max_tokens": model_config.get("max_tokens", None)
-            }]
+            "model_name": model_config.get("model", "").split("/")[-1],
+            "temperature": model_config.get("temperature", 0.7),
+            "max_tokens": model_config.get("max_tokens", None)
         }
     
     def _convert_message_history(self) -> List[Dict[str, Any]]:

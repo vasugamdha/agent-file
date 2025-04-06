@@ -2,24 +2,40 @@
 """
 Test LangChain Compatibility
 
-This script tests the compatibility of the converted agent file with LangChain.
+This script tests compatibility with the LangChain framework by:
+1. Importing LangChain packages
+2. Loading a converted .langchain.json file
+3. Extracting components (tools, memory, etc.)
+4. Verifying the structure matches LangChain expectations
 """
 
 import os
 import json
 import sys
+import importlib.util
 
 def test_langchain_compatibility():
     print("Testing LangChain compatibility...")
     
     # Try to import LangChain
     try:
-        from langchain.agents import AgentExecutor, create_openai_tools_agent
-        from langchain.schema import SystemMessage, HumanMessage
+        # Check if the packages are already imported
+        langchain_spec = importlib.util.find_spec("langchain")
+        langchain_openai_spec = importlib.util.find_spec("langchain_openai")
+        
+        if not langchain_spec or not langchain_openai_spec:
+            print("❌ Failed to import LangChain. Please install with: pip install langchain langchain-openai")
+            return False
+            
+        import langchain
+        from langchain.agents import tool
+        from langchain.prompts import ChatPromptTemplate
         from langchain_openai import ChatOpenAI
+        
         print("✓ Successfully imported LangChain packages")
-    except ImportError:
-        print("❌ Failed to import LangChain. Please install with: pip install langchain langchain-openai")
+    except (ImportError, ModuleNotFoundError) as e:
+        print(f"❌ Failed to import LangChain: {e}")
+        print("   Please install with: pip install langchain langchain-openai")
         return False
     
     # Find our converted file
@@ -41,38 +57,86 @@ def test_langchain_compatibility():
         print(f"❌ Failed to load converted file: {e}")
         return False
     
-    # Extract tools
-    config = data.get("config", {})
-    tools = config.get("tools", [])
+    # Verify the expected structure
+    if 'config' not in data:
+        print("❌ Invalid format: missing 'config' key")
+        return False
     
-    print(f"✓ Extracted {len(tools)} tools and model configuration")
+    config = data['config']
     
-    # Print tool names
-    for tool in tools:
-        tool_name = tool.get("name", "Unknown")
-        print(f"  - Found tool: {tool_name}")
+    # Check for essential components
+    if not config.get('system_message'):
+        print("❌ Missing system_message")
+        return False
     
-    print(f"✓ Processed {len(tools)} tools")
+    if not isinstance(config.get('tools', []), list):
+        print("❌ Tools should be a list")
+        return False
     
-    # Check model config
-    model_config = config.get("model", {})
-    model_name = model_config.get("model_name", "")
+    if not isinstance(config.get('memory', {}), dict):
+        print("❌ Memory should be a dictionary")
+        return False
     
-    print(f"ℹ No API key found, skipping model initialization for: {model_name}")
+    # Check for valid model config
+    model_config = config.get('model', {})
+    if not model_config:
+        print("⚠️ No model configuration found. Will use default model settings.")
+    else:
+        if not model_config.get('model_name'):
+            print("⚠️ No model name specified. Will use default model.")
     
-    # Display assessment
-    print("Format Compatibility Assessment:")
-    print("================================")
-    print("✓ JSON structure loads correctly")
-    print("✓ Required components are present (system message, tools, model config)")
-    print("✓ Tools format appears compatible")
+    # Verify tool format is compatible with LangChain
+    for tool in config.get('tools', []):
+        if not tool.get('name'):
+            print("❌ Tool missing name")
+            return False
+        if not tool.get('description'):
+            print("❌ Tool missing description")
+            return False
+        if 'parameters' not in tool:
+            print("❌ Tool missing parameters schema")
+            return False
     
-    # Check for context summary
-    if "context_summary" in config:
-        print("✓ Context summary present (not a standard LangChain feature, but accessible)")
+    print("✓ All required components validated")
     
-    print("Verdict: The converted format should be compatible with LangChain.")
-    print("Note: Full functionality would require properly implementing the tool functions.")
+    # Test creating tools from the configuration
+    tools = []
+    for tool_config in config.get('tools', []):
+        # In a real implementation, you would implement actual tool functions
+        # Here we just create mock functions for testing compatibility
+        tool_name = tool_config['name']
+        tool_description = tool_config['description']
+        
+        # Create a simple function without using decorator
+        def create_mock_function(name):
+            def mock_function(input_str: str) -> str:
+                """Mock tool implementation"""
+                return f"Mock response from {name}"
+            return mock_function
+            
+        mock_func = create_mock_function(tool_name)
+        
+        # Create a simple mock tool object
+        mock_tool = {
+            "name": tool_name,
+            "description": tool_description,
+            "func": mock_func
+        }
+        
+        tools.append(mock_tool)
+    
+    print(f"✓ Successfully extracted {len(tools)} tools")
+    
+    # Test system message with context summary
+    system_message = config.get('system_message', '')
+    if config.get('context_summary'):
+        system_message += f"\n\n{config.get('context_summary')}"
+        print("✓ Added context summary to system message")
+    
+    print("\n✅ Compatibility test succeeded!")
+    print("The converted format should be compatible with LangChain.")
+    print("Note: For full functionality, you'll need to implement the actual tool functions.")
+    
     return True
 
 if __name__ == "__main__":

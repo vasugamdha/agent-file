@@ -9,17 +9,26 @@ from our converted format and sending it a test query.
 import os
 import json
 import sys
+import importlib.util
 
 def test_autogen_functional():
     print("Testing AutoGen functional compatibility...")
     
     # Try to import AutoGen
     try:
+        # Check if the package is already imported
+        autogen_spec = importlib.util.find_spec("autogen")
+        
+        if not autogen_spec:
+            print("❌ Failed to import AutoGen. Please install with: pip install pyautogen")
+            return False
+            
         import autogen
         from autogen import Agent, AssistantAgent, UserProxyAgent, config_list_from_json
         print("✓ Successfully imported AutoGen packages")
-    except ImportError:
-        print("❌ Failed to import AutoGen. Please install with: pip install pyautogen")
+    except (ImportError, ModuleNotFoundError) as e:
+        print(f"❌ Failed to import AutoGen: {e}")
+        print("   Please install with: pip install pyautogen")
         return False
     
     # Find our converted file
@@ -117,39 +126,45 @@ def test_autogen_functional():
         
         print("✓ Created mock agents (no API key)")
     else:
-        # Extract model configuration
-        model_config = config.get("model", {})
-        model_name = model_config.get("model_name", "gpt-3.5-turbo")
-        temperature = model_config.get("temperature", 0.7)
-        
-        # Set up LLM configuration for AutoGen
-        llm_config = {
-            "config_list": [{"model": model_name, "api_key": api_key}],
-            "temperature": temperature,
-            "functions": [
-                {
-                    "name": tool["name"],
-                    "description": tool["description"],
-                    "parameters": tool.get("parameters", {"type": "object", "properties": {}})
-                } for tool in tools_data
-            ]
-        }
-        
-        # Create actual AutoGen agents
-        assistant = autogen.AssistantAgent(
-            name="assistant",
-            system_message=system_message,
-            llm_config=llm_config,
-            function_map=function_map
-        )
-        
-        user_proxy = autogen.UserProxyAgent(
-            name="user",
-            human_input_mode="NEVER",
-            function_map=function_map
-        )
-        
-        print("✓ Successfully created AutoGen agents")
+        try:
+            # Extract model configuration
+            model_config = config.get("model", {})
+            model_name = model_config.get("model_name", "gpt-3.5-turbo")
+            temperature = model_config.get("temperature", 0.7)
+            
+            # Set up LLM configuration for AutoGen
+            llm_config = {
+                "config_list": [{"model": model_name, "api_key": api_key}],
+                "temperature": temperature,
+                "functions": [
+                    {
+                        "name": tool["name"],
+                        "description": tool["description"],
+                        "parameters": tool.get("parameters", {"type": "object", "properties": {}})
+                    } for tool in tools_data
+                ]
+            }
+            
+            # Create actual AutoGen agents
+            assistant = autogen.AssistantAgent(
+                name="assistant",
+                system_message=system_message,
+                llm_config=llm_config,
+                function_map=function_map
+            )
+            
+            user_proxy = autogen.UserProxyAgent(
+                name="user",
+                human_input_mode="NEVER",
+                function_map=function_map
+            )
+            
+            print("✓ Successfully created AutoGen agents")
+        except Exception as e:
+            print(f"❌ Failed to create AutoGen agents: {e}")
+            import traceback
+            traceback.print_exc()
+            return False
     
     # Test the agent
     try:

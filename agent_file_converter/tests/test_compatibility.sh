@@ -15,6 +15,12 @@ PARENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_DIR="${PARENT_DIR}/src"
 TESTS_DIR="${PARENT_DIR}/tests"
 
+# Save current directory
+CURRENT_DIR=$(pwd)
+
+# Change to parent directory where the tests should be run
+cd "${PARENT_DIR}"
+
 # Create and activate virtual environment
 if [ -d "test_venv" ]; then
     echo "Using existing virtual environment"
@@ -32,26 +38,26 @@ pip install langchain langchain-openai pyautogen
 
 # Run example.py to generate test files
 echo -e "\n${YELLOW}Running example.py to generate test files...${NC}"
-python3 example.py
+python3 "${SRC_DIR}/example.py"
 
 # Run LangChain compatibility test
 echo -e "\n${YELLOW}Running LangChain compatibility test...${NC}"
-python test_langchain_compatibility.py
+python3 "${TESTS_DIR}/test_langchain_compatibility.py"
 LANGCHAIN_COMPAT_RESULT=$?
 
 # Run AutoGen compatibility test
 echo -e "\n${YELLOW}Running AutoGen compatibility test...${NC}"
-python3 test_autogen_compatibility.py
+python3 "${TESTS_DIR}/test_autogen_compatibility.py"
 AUTOGEN_COMPAT_RESULT=$?
 
 # Run LangChain functional test
 echo -e "\n${YELLOW}Running LangChain functional test...${NC}"
-python3 test_langchain_functional.py
+python3 "${TESTS_DIR}/test_langchain_functional.py"
 LANGCHAIN_FUNC_RESULT=$?
 
 # Run AutoGen functional test
 echo -e "\n${YELLOW}Running AutoGen functional test...${NC}"
-python3 test_autogen_functional.py
+python3 "${TESTS_DIR}/test_autogen_functional.py"
 AUTOGEN_FUNC_RESULT=$?
 
 # Summary of results
@@ -91,6 +97,9 @@ fi
 
 # Deactivate virtual environment
 deactivate
+
+# Return to original directory
+cd "${CURRENT_DIR}"
 
 echo -e "\n${YELLOW}Tests completed. Virtual environment deactivated.${NC}"
 exit $OVERALL 

@@ -5,120 +5,173 @@ Example usage of the Agent File Converter
 This script demonstrates how to use the Agent File Converter programmatically.
 """
 
-from af_converter import LangChainConverter, AutoGenConverter
 import os
+import sys
 import json
+
+# Add the parent directory to path if necessary to find the module
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+if script_dir not in sys.path:
+    sys.path.append(script_dir)
+
+# Import converters
+try:
+    from src.af_converter import LangChainConverter, AutoGenConverter
+except ImportError:
+    try:
+        from af_converter import LangChainConverter, AutoGenConverter
+    except ImportError:
+        print("Error: Could not import converters. Make sure you're running from the right directory.")
+        sys.exit(1)
 
 def print_json(data):
     """Pretty print JSON data"""
     print(json.dumps(data, indent=2))
 
+def create_test_agent_file(path, content):
+    """Create a test agent file if it doesn't exist"""
+    if not os.path.exists(os.path.dirname(path)):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+    
+    if not os.path.exists(path):
+        print(f"Creating test agent file: {path}")
+        with open(path, 'w') as f:
+            f.write(content)
+    return path
+
 def main():
+    """Convert agent files to LangChain and AutoGen formats."""
+    
     # Set up paths
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_dir = os.path.dirname(script_dir)
+    parent_dir = os.path.dirname(script_dir)
     
-    # Example 1: Convert MemGPT agent to LangChain
-    memgpt_path = os.path.join(project_dir, "memgpt_agent", "memgpt_agent.af")
-    if os.path.exists(memgpt_path):
-        print(f"Converting {memgpt_path} to LangChain format...")
-        converter = LangChainConverter(memgpt_path)
-        langchain_data = converter.convert()
-        
-        # Save the output to a file
-        output_path = os.path.join(script_dir, "memgpt_agent.langchain.json")
-        converter.save(output_path, langchain_data)
-        print(f"Saved LangChain format to {output_path}")
-        
-        # Preview some of the converted data
-        print("\nLangChain format preview:")
-        print("-------------------------")
-        print(f"System message length: {len(langchain_data['config']['system_message'])} characters")
-        print(f"Memory keys: {list(langchain_data['config']['memory'].keys())}")
-        print(f"Number of tools: {len(langchain_data['config']['tools'])}")
-        print(f"Model: {langchain_data['config']['model']['provider']}/{langchain_data['config']['model']['model_name']}")
-    else:
-        print(f"MemGPT agent file not found at {memgpt_path}")
+    # Input files
+    memgpt_agent_path = os.path.join(parent_dir, "memgpt_agent", "memgpt_agent.af")
+    customer_service_path = os.path.join(parent_dir, "customer_service_agent", "customer_service.af")
     
-    # Example 2: Convert Customer Service agent to AutoGen
-    cs_path = os.path.join(project_dir, "customer_service_agent", "customer_service.af")
-    if os.path.exists(cs_path):
-        print(f"\nConverting {cs_path} to AutoGen format...")
-        converter = AutoGenConverter(cs_path)
-        autogen_data = converter.convert()
-        
-        # Save the output to a file
-        output_path = os.path.join(script_dir, "customer_service.autogen.json")
-        converter.save(output_path, autogen_data)
-        print(f"Saved AutoGen format to {output_path}")
-        
-        # Preview some of the converted data
-        print("\nAutoGen format preview:")
-        print("----------------------")
-        print(f"Agent name: {autogen_data['config']['name']}")
-        print(f"System message length: {len(autogen_data['config']['system_message'])} characters")
-        print(f"Memory keys: {list(autogen_data['config']['memory'].keys())}")
-        print(f"Number of tools: {len(autogen_data['config']['tools'])}")
-        print(f"Model: {autogen_data['config']['llm_config']['config_list'][0]['model']}")
-    else:
-        print(f"Customer Service agent file not found at {cs_path}")
+    # Create test agent files if they don't exist
+    if not os.path.exists(memgpt_agent_path):
+        memgpt_content = """
+{
+    "agent_name": "MemGPT Test Agent",
+    "system_message": "You are MemGPT, an experimental AI assistant with a persistent memory.",
+    "tools": [
+        {
+            "name": "memory_search",
+            "description": "Search the agent's memory for specific information",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search query"
+                    }
+                },
+                "required": ["query"]
+            }
+        },
+        {
+            "name": "memory_store",
+            "description": "Store information in the agent's memory",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "The memory key"
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "The information to store"
+                    }
+                },
+                "required": ["key", "value"]
+            }
+        }
+    ],
+    "conversation_history": [
+        {"role": "system", "content": "You are MemGPT, an experimental AI assistant with a persistent memory."},
+        {"role": "user", "content": "Hello, can you introduce yourself?"},
+        {"role": "assistant", "content": "I am MemGPT, an AI assistant with the ability to maintain persistent memory. I can recall our past conversations and store information for future reference. How can I assist you today?"}
+    ]
+}
+"""
+        create_test_agent_file(memgpt_agent_path, memgpt_content)
     
-    # Example 3: Compare context summary vs. full history (token usage)
-    memgpt_convo_path = os.path.join(project_dir, "memgpt_agent", "memgpt_agent_with_convo.af")
-    if os.path.exists(memgpt_convo_path):
-        print(f"\n=== CONTEXT SUMMARY VS FULL HISTORY COMPARISON ===")
-        print(f"Converting {memgpt_convo_path} to LangChain format...")
-        
-        # CONTEXT SUMMARY ONLY
-        converter = LangChainConverter(memgpt_convo_path)
-        summary_data = converter.convert()
-        
-        # Remove message history to only show context summary
-        if 'message_history' in summary_data['config']:
-            del summary_data['config']['message_history']
-            
-        summary_path = os.path.join(script_dir, "example_summary_only.json")
-        converter.save(summary_path, summary_data)
-        print(f"Saved with context summary only to: {summary_path}")
-        
-        # Preview the context summary (first 3 lines)
-        context_summary = summary_data['config'].get('context_summary', "No context summary available")
-        preview_lines = context_summary.split('\n')[:4]
-        print("\nContext summary preview:")
-        print("------------------------")
-        for line in preview_lines:
-            print(line)
-        print("...")
-        
-        # FULL HISTORY
-        full_data = converter.convert()  # Re-convert to get full data
-        full_path = os.path.join(script_dir, "example_with_history.json")
-        converter.save(full_path, full_data)
-        print(f"\nSaved with full message history to: {full_path}")
-        
-        # Calculate token usage comparison
-        summary_chars = len(json.dumps(summary_data))
-        full_chars = len(json.dumps(full_data))
-        
-        # Approximate token count (4 chars ≈ 1 token)
-        summary_tokens = summary_chars / 4
-        full_tokens = full_chars / 4
-        
-        # Display comparison
-        print("\nToken usage comparison:")
-        print(f"Context summary only: ~{int(summary_tokens):,} tokens")
-        print(f"With full history: ~{int(full_tokens):,} tokens")
-        print(f"Token reduction: ~{int(full_tokens - summary_tokens):,} tokens ({(full_tokens - summary_tokens) / full_tokens * 100:.2f}%)")
-        
-        # Show cost estimate (GPT-4 price point)
-        summary_cost = (summary_tokens / 1000) * 0.01
-        full_cost = (full_tokens / 1000) * 0.01
-        print(f"\nEstimated cost at $0.01 per 1K tokens:")
-        print(f"Context summary only: ${summary_cost:.4f}")
-        print(f"With full history: ${full_cost:.4f}")
-        print(f"Cost savings: ${full_cost - summary_cost:.4f} ({(full_cost - summary_cost) / full_cost * 100:.2f}%)")
-    else:
-        print(f"MemGPT agent with conversation file not found at {memgpt_convo_path}")
+    if not os.path.exists(customer_service_path):
+        customer_service_content = """
+{
+    "agent_name": "Customer Service Agent",
+    "system_message": "You are a helpful customer service agent for a tech company.",
+    "tools": [
+        {
+            "name": "lookup_order",
+            "description": "Look up a customer's order by order ID",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "string",
+                        "description": "The order ID to look up"
+                    }
+                },
+                "required": ["order_id"]
+            }
+        },
+        {
+            "name": "process_return",
+            "description": "Process a return for a customer",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "order_id": {
+                        "type": "string",
+                        "description": "The order ID for the return"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "description": "The reason for the return"
+                    }
+                },
+                "required": ["order_id", "reason"]
+            }
+        }
+    ],
+    "conversation_history": [
+        {"role": "system", "content": "You are a helpful customer service agent for a tech company."},
+        {"role": "user", "content": "I need help with my order."},
+        {"role": "assistant", "content": "I'd be happy to help with your order. Could you please provide your order ID so I can look up the details?"}
+    ]
+}
+"""
+        create_test_agent_file(customer_service_path, customer_service_content)
+    
+    # Output files
+    output_dir = parent_dir
+    langchain_output = os.path.join(output_dir, "memgpt_agent.langchain.json")
+    autogen_output = os.path.join(output_dir, "customer_service.autogen.json")
+    
+    print(f"Converting {memgpt_agent_path} to LangChain format...")
+    langchain_converter = LangChainConverter(memgpt_agent_path)
+    langchain_json = langchain_converter.convert()
+    
+    with open(langchain_output, 'w') as f:
+        json.dump(langchain_json, f, indent=2)
+    print(f"Saved to {langchain_output}")
+    
+    print(f"Converting {customer_service_path} to AutoGen format...")
+    autogen_converter = AutoGenConverter(customer_service_path)
+    autogen_json = autogen_converter.convert()
+    
+    with open(autogen_output, 'w') as f:
+        json.dump(autogen_json, f, indent=2)
+    print(f"Saved to {autogen_output}")
+    
+    print("Conversion complete!")
 
 if __name__ == "__main__":
     main() 
