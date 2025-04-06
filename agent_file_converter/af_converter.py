@@ -83,39 +83,38 @@ class AgentFileConverter:
             return "Content could not be extracted"
     
     def _create_context_summary(self) -> str:
-        """Create a concise summary from relevant messages in context"""
+        """Create a concise summary from in-context messages"""
         # Get messages marked as in-context
         in_context_indices = self.agent_data.get("in_context_message_indices", [])
         messages = self.agent_data.get("messages", [])
         
-        if not in_context_indices or not messages:
-            return "No context available"
+        if not in_context_indices:
+            return "No context available."
         
         # Extract only the messages that should be in context
         relevant_messages = []
         for idx in in_context_indices:
-            if isinstance(idx, int) and 0 <= idx < len(messages):
+            if idx < len(messages):
                 relevant_messages.append(messages[idx])
         
         if not relevant_messages:
-            return "No relevant context available"
+            return "No context available."
         
         # Format them into a concise summary
-        summary = "CONTEXT SUMMARY:\n"
+        summary = "Context summary:\n"
         for msg in relevant_messages:
             role = msg.get("role", "unknown")
-            content = self._get_message_content(msg)
-            # Truncate long messages
-            if len(content) > 100:
-                truncated_content = content[:97] + "..."
-            else:
-                truncated_content = content
-            
-            # Skip empty content
-            if not truncated_content.strip():
+            # Skip system messages in summary
+            if role == "system":
                 continue
                 
-            summary += f"- {role.capitalize()}: {truncated_content}\n"
+            content = self._get_message_content(msg)
+            # Truncate by words rather than characters
+            words = content.split()
+            if len(words) > 200:
+                content = " ".join(words[:200]) + "..."
+                
+            summary += f"- {role.capitalize()}: {content}\n"
         
         return summary
 
@@ -139,7 +138,7 @@ class LangChainConverter(AgentFileConverter):
         # Extract message history
         message_history = self._convert_message_history()
         
-        # Generate context summary
+        # Create context summary
         context_summary = self._create_context_summary()
         
         # Build LangChain compatible format
@@ -150,8 +149,8 @@ class LangChainConverter(AgentFileConverter):
                 "memory": self._convert_memory(memory_blocks),
                 "tools": self._convert_tools(tools),
                 "model": self._convert_model_config(model_config),
-                "message_history": message_history,
-                "context_summary": context_summary
+                "context_summary": context_summary,
+                "message_history": message_history
             }
         }
         
@@ -267,7 +266,7 @@ class AutoGenConverter(AgentFileConverter):
         # Extract message history
         message_history = self._convert_message_history()
         
-        # Generate context summary
+        # Create context summary
         context_summary = self._create_context_summary()
         
         # Build AutoGen compatible format
@@ -281,8 +280,8 @@ class AutoGenConverter(AgentFileConverter):
                 "memory": self._convert_memory(memory_blocks),
                 "tools": self._convert_tools(tools),
                 "llm_config": self._convert_model_config(model_config),
-                "chat_history": message_history,
-                "context_summary": context_summary
+                "context_summary": context_summary,
+                "chat_history": message_history
             }
         }
         
@@ -382,7 +381,7 @@ def main():
                         help="Target framework format")
     parser.add_argument("--output", help="Output file path (default: input filename with new extension)")
     parser.add_argument("--include-history", action="store_true", default=False,
-                       help="Include message history in the conversion (default: False)")
+                       help="Include full message history in the conversion (default: False)")
     parser.add_argument("--no-context-summary", action="store_true", default=False,
                        help="Exclude context summary from the conversion (default: False)")
     
@@ -404,20 +403,26 @@ def main():
         converter = converter_class(args.input)
         converted_data = converter.convert()
         
+        # Handle message history and context summary based on flags
+        config = converted_data["config"]
+        
         # Remove message history if not requested
         if not args.include_history:
-            if args.output_format == "langchain" and "message_history" in converted_data["config"]:
-                del converted_data["config"]["message_history"]
-            elif args.output_format == "autogen" and "chat_history" in converted_data["config"]:
-                del converted_data["config"]["chat_history"]
+            if args.output_format == "langchain" and "message_history" in config:
+                del config["message_history"]
+            elif args.output_format == "autogen" and "chat_history" in config:
+                del config["chat_history"]
         
         # Remove context summary if requested
-        if args.no_context_summary:
-            if "context_summary" in converted_data["config"]:
-                del converted_data["config"]["context_summary"]
+        if args.no_context_summary and "context_summary" in config:
+            del config["context_summary"]
         
         converter.save(args.output, converted_data)
-        print(f"Conversion completed with{'' if args.include_history else 'out'} message history, with{'' if not args.no_context_summary else 'out'} context summary")
+        
+        # Prepare output message
+        summary_status = "" if args.no_context_summary else " with context summary"
+        history_status = " with" if args.include_history else " without"
+        print(f"Conversion completed{summary_status}{history_status} message history")
     else:
         print(f"Error: Unsupported output format: {args.output_format}")
         sys.exit(1)

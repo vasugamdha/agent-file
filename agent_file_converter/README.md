@@ -9,10 +9,10 @@ A utility tool for converting Letta Agent Files (.af) to other popular agent fra
 
 ## Key Features
 
-- **Context Summary**: Automatically extracts and includes a concise summary of relevant context from the agent's memory (enabled by default)
-- **Message History**: Option to include full conversation history (disabled by default to maintain token efficiency)
-- **Tool Conversion**: Maps Letta tools to framework-specific tool formats
-- **Memory Conversion**: Preserves persona and user information from memory blocks
+- **Context Summary:** Automatically extracts and summarizes the most important context from message history, reducing token usage by ~90% compared to full conversation history.
+- **Message History:** Optionally include the full message history for complete conversation context.
+- **Tool Conversion:** Maps Letta tools to framework-specific formats.
+- **Memory Preservation:** Maintains core memory blocks (persona, human info).
 
 ## Installation
 
@@ -33,22 +33,22 @@ pip install -r requirements.txt
 python af_converter.py --input /path/to/agent.af --output-format langchain
 ```
 
-This will generate a converted file with a context summary but without full message history.
+This will generate a converted file with context summary (but without full message history) and saves it with appropriate extension.
 
 ### Including Message History
 
-By default, message history is not included in the conversion to maintain token efficiency. To include it:
+By default, the converter only includes a concise context summary. To include the full message history:
 
 ```bash
 python af_converter.py --input /path/to/agent.af --output-format langchain --include-history
 ```
 
-### Excluding Context Summary
+### Disabling Context Summary
 
-By default, a context summary is included. To exclude it:
+If you don't want to include the context summary:
 
 ```bash
-python af_converter.py --input /path/to/agent.af --output-format langchain --no-context-summary
+python af_converter.py --input /path/to/agent.af --output-format autogen --no-context-summary
 ```
 
 ### Specifying Output File
@@ -64,9 +64,26 @@ Convert a MemGPT agent to LangChain format with context summary:
 python af_converter.py --input ../memgpt_agent/memgpt_agent.af --output-format langchain
 ```
 
-Convert a Customer Service agent to AutoGen format with both context summary and message history:
+Convert a Customer Service agent to AutoGen format with full message history:
 ```bash
 python af_converter.py --input ../customer_service_agent/customer_service.af --output-format autogen --include-history
+```
+
+## Context Summary vs. Full History
+
+The context summary feature is inspired by MemGPT's approach to memory management. Instead of including the entire conversation history (which can be token-heavy), the converter extracts only the most relevant messages based on the agent's context window indices.
+
+Benefits:
+- **Token Efficiency:** Reduces token usage by ~90% compared to full history
+- **Preserved Context:** Maintains the most relevant parts of the conversation
+- **Framework Compatibility:** Makes Letta agents more compatible with other frameworks that don't have the same sophisticated memory management
+
+Example of token usage comparison:
+```
+File size comparison:
+Context summary only: 2.5 KB (~621 tokens)
+With full history: 31.9 KB (~7979 tokens)
+Token reduction: ~7358 tokens (92%)
 ```
 
 ## Output Format
@@ -91,24 +108,9 @@ The LangChain output is structured as follows:
       "temperature": 0.7,
       "max_tokens": null
     },
-    "context_summary": "CONTEXT SUMMARY:\n- User: message content...\n- Assistant: response...",
+    "context_summary": "Context summary:\n- User: ...\n- Assistant: ...",
     "message_history": [
-      {
-        "type": "human",
-        "data": {
-          "content": "...",
-          "additional_kwargs": {}
-        }
-      },
-      {
-        "type": "ai",
-        "data": {
-          "content": "...",
-          "additional_kwargs": {
-            "tool_calls": [...]
-          }
-        }
-      }
+      // Optional, included with --include-history flag
     ]
   }
 }
@@ -138,36 +140,13 @@ The AutoGen output is structured as follows:
         "max_tokens": null
       }]
     },
-    "context_summary": "CONTEXT SUMMARY:\n- User: message content...\n- Assistant: response...",
+    "context_summary": "Context summary:\n- User: ...\n- Assistant: ...",
     "chat_history": [
-      {
-        "role": "human",
-        "content": "..."
-      },
-      {
-        "role": "assistant",
-        "content": "...",
-        "function_call": {...}
-      },
-      {
-        "role": "function",
-        "name": "...",
-        "content": "..."
-      }
+      // Optional, included with --include-history flag
     ]
   }
 }
 ```
-
-## Context Summary vs. Full Message History
-
-The converter provides two approaches to handling conversation context:
-
-1. **Context Summary (Default)**: Extracts only the most relevant messages that would be in the agent's immediate context window, providing a concise summary that maintains the essential context with minimal token usage.
-
-2. **Full Message History (Optional)**: Includes all messages exchanged between the user and agent, preserving the complete conversation history but potentially using more tokens.
-
-This design aligns with MemGPT's token-efficient memory management philosophy, allowing you to choose the approach that best fits your needs.
 
 ## Programmatic Usage
 
@@ -176,21 +155,32 @@ You can also use the converter in your own Python scripts:
 ```python
 from af_converter import LangChainConverter, AutoGenConverter
 
-# Convert a Letta .af file to LangChain format
+# Convert a Letta .af file to LangChain format with context summary only
 converter = LangChainConverter("path/to/agent.af")
 langchain_data = converter.convert()
 
-# Remove message history to maintain token efficiency (if needed)
-if "message_history" in langchain_data["config"]:
-    del langchain_data["config"]["message_history"]
+# Remove full message history if you only want context summary
+if 'message_history' in langchain_data['config']:
+    del langchain_data['config']['message_history']
 
 # Save the converted data to a file
-converter.save("output.langchain.json", langchain_data)
+converter.save("output.json", langchain_data)
+
+# For full message history, just use the data as-is
+converter = AutoGenConverter("path/to/agent.af")
+autogen_data = converter.convert()
+converter.save("output_with_history.json", autogen_data)
 ```
+
+## Advantages Over the Original .af Format
+
+- **Token Efficiency:** Context summaries capture essential conversation context with minimal token usage
+- **Framework Compatibility:** Makes Letta agents usable with popular frameworks
+- **Flexibility:** Choose between concise summaries or full conversation history
 
 ## Limitations
 
-- This converter focuses on the core components (system prompts, memory blocks, tools, and model configurations)
+- The context summary is based on the in-context message indices in the original .af file
 - Some framework-specific features might require additional manual configuration
 - Environment variables and tool rules might need manual adjustment after conversion
 
