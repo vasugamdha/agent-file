@@ -7,6 +7,13 @@ A utility tool for converting Letta Agent Files (.af) to other popular agent fra
 - **Letta .af → LangChain**: Converts .af files to LangChain-compatible format
 - **Letta .af → AutoGen**: Converts .af files to AutoGen-compatible format
 
+## Key Features
+
+- **Context Summary**: Automatically extracts and includes a concise summary of relevant context from the agent's memory (enabled by default)
+- **Message History**: Option to include full conversation history (disabled by default to maintain token efficiency)
+- **Tool Conversion**: Maps Letta tools to framework-specific tool formats
+- **Memory Conversion**: Preserves persona and user information from memory blocks
+
 ## Installation
 
 ```bash
@@ -26,14 +33,22 @@ pip install -r requirements.txt
 python af_converter.py --input /path/to/agent.af --output-format langchain
 ```
 
-This will generate a converted file with the same name as your input but with a `.langchain.json` extension.
+This will generate a converted file with a context summary but without full message history.
 
 ### Including Message History
 
-By default, message history is not included in the conversion. To include it:
+By default, message history is not included in the conversion to maintain token efficiency. To include it:
 
 ```bash
 python af_converter.py --input /path/to/agent.af --output-format langchain --include-history
+```
+
+### Excluding Context Summary
+
+By default, a context summary is included. To exclude it:
+
+```bash
+python af_converter.py --input /path/to/agent.af --output-format langchain --no-context-summary
 ```
 
 ### Specifying Output File
@@ -44,12 +59,12 @@ python af_converter.py --input /path/to/agent.af --output-format autogen --outpu
 
 ### Examples
 
-Convert a MemGPT agent to LangChain format:
+Convert a MemGPT agent to LangChain format with context summary:
 ```bash
 python af_converter.py --input ../memgpt_agent/memgpt_agent.af --output-format langchain
 ```
 
-Convert a Customer Service agent to AutoGen format with message history:
+Convert a Customer Service agent to AutoGen format with both context summary and message history:
 ```bash
 python af_converter.py --input ../customer_service_agent/customer_service.af --output-format autogen --include-history
 ```
@@ -76,6 +91,7 @@ The LangChain output is structured as follows:
       "temperature": 0.7,
       "max_tokens": null
     },
+    "context_summary": "CONTEXT SUMMARY:\n- User: message content...\n- Assistant: response...",
     "message_history": [
       {
         "type": "human",
@@ -122,6 +138,7 @@ The AutoGen output is structured as follows:
         "max_tokens": null
       }]
     },
+    "context_summary": "CONTEXT SUMMARY:\n- User: message content...\n- Assistant: response...",
     "chat_history": [
       {
         "role": "human",
@@ -142,6 +159,16 @@ The AutoGen output is structured as follows:
 }
 ```
 
+## Context Summary vs. Full Message History
+
+The converter provides two approaches to handling conversation context:
+
+1. **Context Summary (Default)**: Extracts only the most relevant messages that would be in the agent's immediate context window, providing a concise summary that maintains the essential context with minimal token usage.
+
+2. **Full Message History (Optional)**: Includes all messages exchanged between the user and agent, preserving the complete conversation history but potentially using more tokens.
+
+This design aligns with MemGPT's token-efficient memory management philosophy, allowing you to choose the approach that best fits your needs.
+
 ## Programmatic Usage
 
 You can also use the converter in your own Python scripts:
@@ -153,21 +180,17 @@ from af_converter import LangChainConverter, AutoGenConverter
 converter = LangChainConverter("path/to/agent.af")
 langchain_data = converter.convert()
 
+# Remove message history to maintain token efficiency (if needed)
+if "message_history" in langchain_data["config"]:
+    del langchain_data["config"]["message_history"]
+
 # Save the converted data to a file
 converter.save("output.langchain.json", langchain_data)
-
-# Convert a Letta .af file to AutoGen format
-converter = AutoGenConverter("path/to/agent.af")
-autogen_data = converter.convert()
-
-# Save the converted data to a file
-converter.save("output.autogen.json", autogen_data)
 ```
 
 ## Limitations
 
 - This converter focuses on the core components (system prompts, memory blocks, tools, and model configurations)
-- Message history can now be included in conversions (disabled by default to maintain backward compatibility)
 - Some framework-specific features might require additional manual configuration
 - Environment variables and tool rules might need manual adjustment after conversion
 

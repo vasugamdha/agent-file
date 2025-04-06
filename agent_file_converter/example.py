@@ -37,6 +37,14 @@ def main():
         print(f"Memory keys: {list(langchain_data['config']['memory'].keys())}")
         print(f"Number of tools: {len(langchain_data['config']['tools'])}")
         print(f"Model: {langchain_data['config']['model']['provider']}/{langchain_data['config']['model']['model_name']}")
+        
+        # Show context summary if present
+        if "context_summary" in langchain_data["config"]:
+            print("\nContext Summary Preview:")
+            print("----------------------")
+            summary = langchain_data["config"]["context_summary"]
+            # Only print the first few lines to keep it brief
+            print("\n".join(summary.split("\n")[:5]) + "...")
     else:
         print(f"MemGPT agent file not found at {memgpt_path}")
     
@@ -60,13 +68,21 @@ def main():
         print(f"Memory keys: {list(autogen_data['config']['memory'].keys())}")
         print(f"Number of tools: {len(autogen_data['config']['tools'])}")
         print(f"Model: {autogen_data['config']['llm_config']['config_list'][0]['model']}")
+        
+        # Show context summary if present
+        if "context_summary" in autogen_data["config"]:
+            print("\nContext Summary Preview:")
+            print("----------------------")
+            summary = autogen_data["config"]["context_summary"]
+            # Only print the first few lines to keep it brief
+            print("\n".join(summary.split("\n")[:5]) + "...")
     else:
         print(f"Customer Service agent file not found at {cs_path}")
     
-    # Example 3: Convert MemGPT agent with conversation history to LangChain
+    # Example 3: Convert MemGPT agent with conversation history to LangChain (with both context and history)
     memgpt_convo_path = os.path.join(project_dir, "memgpt_agent", "memgpt_agent_with_convo.af")
     if os.path.exists(memgpt_convo_path):
-        print(f"\nConverting {memgpt_convo_path} to LangChain format with message history...")
+        print(f"\nConverting {memgpt_convo_path} to LangChain format with context summary and message history...")
         converter = LangChainConverter(memgpt_convo_path)
         langchain_data = converter.convert()
         
@@ -90,6 +106,17 @@ def main():
                 msg_type = msg['type']
                 message_types[msg_type] = message_types.get(msg_type, 0) + 1
             print(f"Message type distribution: {message_types}")
+        
+        # Preview the context summary
+        if "context_summary" in langchain_data["config"]:
+            print("\nContext Summary Preview:")
+            print("----------------------")
+            summary = langchain_data["config"]["context_summary"]
+            # Show the first few lines
+            print("\n".join(summary.split("\n")[:5]) + "...")
+            # Count entries in the summary
+            entries = len([line for line in summary.split("\n") if line.startswith("- ")])
+            print(f"Total context entries: {entries}")
     else:
         print(f"MemGPT agent with conversation file not found at {memgpt_convo_path}")
 
