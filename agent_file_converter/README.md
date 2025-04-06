@@ -28,6 +28,14 @@ python af_converter.py --input /path/to/agent.af --output-format langchain
 
 This will generate a converted file with the same name as your input but with a `.langchain.json` extension.
 
+### Including Message History
+
+By default, message history is not included in the conversion. To include it:
+
+```bash
+python af_converter.py --input /path/to/agent.af --output-format langchain --include-history
+```
+
 ### Specifying Output File
 
 ```bash
@@ -41,9 +49,9 @@ Convert a MemGPT agent to LangChain format:
 python af_converter.py --input ../memgpt_agent/memgpt_agent.af --output-format langchain
 ```
 
-Convert a Customer Service agent to AutoGen format:
+Convert a Customer Service agent to AutoGen format with message history:
 ```bash
-python af_converter.py --input ../customer_service_agent/customer_service.af --output-format autogen
+python af_converter.py --input ../customer_service_agent/customer_service.af --output-format autogen --include-history
 ```
 
 ## Output Format
@@ -67,7 +75,25 @@ The LangChain output is structured as follows:
       "model_name": "gpt-4-0613",
       "temperature": 0.7,
       "max_tokens": null
-    }
+    },
+    "message_history": [
+      {
+        "type": "human",
+        "data": {
+          "content": "...",
+          "additional_kwargs": {}
+        }
+      },
+      {
+        "type": "ai",
+        "data": {
+          "content": "...",
+          "additional_kwargs": {
+            "tool_calls": [...]
+          }
+        }
+      }
+    ]
   }
 }
 ```
@@ -95,17 +121,55 @@ The AutoGen output is structured as follows:
         "temperature": 0.7,
         "max_tokens": null
       }]
-    }
+    },
+    "chat_history": [
+      {
+        "role": "human",
+        "content": "..."
+      },
+      {
+        "role": "assistant",
+        "content": "...",
+        "function_call": {...}
+      },
+      {
+        "role": "function",
+        "name": "...",
+        "content": "..."
+      }
+    ]
   }
 }
+```
+
+## Programmatic Usage
+
+You can also use the converter in your own Python scripts:
+
+```python
+from af_converter import LangChainConverter, AutoGenConverter
+
+# Convert a Letta .af file to LangChain format
+converter = LangChainConverter("path/to/agent.af")
+langchain_data = converter.convert()
+
+# Save the converted data to a file
+converter.save("output.langchain.json", langchain_data)
+
+# Convert a Letta .af file to AutoGen format
+converter = AutoGenConverter("path/to/agent.af")
+autogen_data = converter.convert()
+
+# Save the converted data to a file
+converter.save("output.autogen.json", autogen_data)
 ```
 
 ## Limitations
 
 - This converter focuses on the core components (system prompts, memory blocks, tools, and model configurations)
+- Message history can now be included in conversions (disabled by default to maintain backward compatibility)
 - Some framework-specific features might require additional manual configuration
 - Environment variables and tool rules might need manual adjustment after conversion
-- Message history is not converted due to framework-specific implementation differences
 
 ## Contributing
 

@@ -62,6 +62,36 @@ def main():
         print(f"Model: {autogen_data['config']['llm_config']['config_list'][0]['model']}")
     else:
         print(f"Customer Service agent file not found at {cs_path}")
+    
+    # Example 3: Convert MemGPT agent with conversation history to LangChain
+    memgpt_convo_path = os.path.join(project_dir, "memgpt_agent", "memgpt_agent_with_convo.af")
+    if os.path.exists(memgpt_convo_path):
+        print(f"\nConverting {memgpt_convo_path} to LangChain format with message history...")
+        converter = LangChainConverter(memgpt_convo_path)
+        langchain_data = converter.convert()
+        
+        # Save the output to a file
+        output_path = os.path.join(script_dir, "memgpt_agent_with_history.langchain.json")
+        converter.save(output_path, langchain_data)
+        print(f"Saved LangChain format with message history to {output_path}")
+        
+        # Preview the message history
+        message_history = langchain_data['config'].get('message_history', [])
+        print("\nLangChain message history preview:")
+        print("----------------------------------")
+        print(f"Total messages: {len(message_history)}")
+        if message_history:
+            print(f"First message type: {message_history[0]['type']}")
+            print(f"First message content (brief): {message_history[0]['data']['content'][:50]}...")
+            
+            # Count message types
+            message_types = {}
+            for msg in message_history:
+                msg_type = msg['type']
+                message_types[msg_type] = message_types.get(msg_type, 0) + 1
+            print(f"Message type distribution: {message_types}")
+    else:
+        print(f"MemGPT agent with conversation file not found at {memgpt_convo_path}")
 
 if __name__ == "__main__":
     main() 
